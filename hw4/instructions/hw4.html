@@ -1,0 +1,1304 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body>
+
+
+
+    
+
+
+
+
+
+
+    
+    <div lang="EN-US">
+        
+            
+            <div>
+                
+                
+                <h2 align="center" style="text-align:center;">
+                    <img width="244" height="121" src="http://www.cs.stonybrook.edu/~cse214/images/logo.gif"/><br/><br/>
+                    <span class="hw-header">HOMEWORK 4 - Spring 2023</span>
+                </h2>  
+                
+                <hr/>
+                
+                <h3><b>HOMEWORK 4 - due <span style="color:black;">Tuesday,</span> March 21st no later than 7:00PM</b></h3>
+                
+                
+                <p><b>Reminders:</b></p>
+                <ul type="disc">
+								<li><b><span style="color:red;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+   Submit your files only via CodeGrade in the <a rel="noopener" href="https://mycourses.stonybrook.edu/d2l/le/content/358338/Home">Content page on Brightspace</a>. Access CodeGrade by clicking &quot;HW4 - CODEGRADE SUBMISSION LINK&quot; for your submission.</span></b><span></span></li>
+
+				<li><b><span style="color:red;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+   Use of a package is optional. If you wish to use it, make sure to name it &quot;hw4&quot; (all in lower case). Otherwise, you will lose points.</span></b><span></span></li>
+
+                    <li><b>Be sure your code follows the <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/codingstyle.htm" target="_blank">coding style</a> for CSE214.</b></li>
+                    <li><b>Make sure you read the warnings about <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">academic dishonesty</a>. <i>Remember, all work you submit for homework or exams MUST be your own work.</i></b></li>
+                    
+                    <li><b><span class="green">You are allowed to use any Java API Data Structure classes such as LinkedList, ArrayList or Vector to implement this assignment.</span></b></li>
+                    <li><b>You may use Scanner, InputStreamReader, or any other class that you wish for keyboard input.</b></li>
+                </ul> 
+                
+            </div> 
+            
+            <hr/>
+        
+            
+            <div>
+                
+                
+                <h2>Assignment</h2>
+                
+                <p> Simulations can be useful to test how random processes are affected by different initial conditions. For example, simulating the arrival of vehicles at a busy intersection can help to determine the optimal timing mechanism controlling how long the stoplight should remain green for a particular road. In this scenario, a simulation can proceed step by step - each step representing a specific unit of time. During each time step, vehicles may arrive in any of the lanes of the intersection with a fixed a probability, and vehicles may pass through the intersection if the light is green in their direction. By changing the arrival probability and stoplight timing, expected average waiting times for vehicles passing through the intersection can be generated and compared for optimization.
+                </p>
+                
+                <p> In this assignment, you will be required to write a Java program to simulate vehicles passing through a busy intersection. The intersection between Route 216 and 320 Road is currently serviced by an old fashioned timer based stop light that frequently causes traffic jams. CSE Associates, Inc. has hired you to create a simulation of how their new Stop Light (model # 214) would be able to better serve this intersection. Your simulation must keep track of the vehicles that arrive at the intersection, and show the state of the vehicles queued up at the light, and describe what happens in every time step.
+                </p>
+                
+                <h3>Simulation Procedure</h3>
+                
+                
+                <p>
+                    The primary simulation procedure should be contained within a <code>static</code> function called <code>simulate()</code> inside the <code>IntersectionSimulator</code> class. This method should begin by initializing the intersection based on a few parameters (<i>listed below</i>), and enter a loop which executes the time steps.
+                </p>
+                
+                <p> Your program will simulate the arrival of vehicles on up to <b>four</b> roads of an intersection for a specified simulation time. You may assume that each road has two traveling directions (<i>forward and backward</i>), with each traveling direction having three lanes (a <i>left turn</i> lane, a <i>middle</i> lane, and a <i>right turn</i> lane), for a total of <code>2 roads * 2 directions per road * 3 lanes per direction = 12 lanes</code>. The simulation will take five parameters at the onset: </p>
+                    <ol>
+                        <li>
+                            <b><code>simulationTime (int):</code></b> Indicates the desired total simulation time.
+                        </li>
+                        <li>
+                             <b><code>arrivalProbability (double):</code></b> Indicates the probability that a vehicle will arrive at <i>any</i> lane during a time step.
+                        </li>
+                        <li>
+                             <b><code>numRoads (int):</code></b> Indicates the number of two-way roads that meet at this intersection.
+                        </li>
+                        <li>
+                             <b><code>names (String[]):</code></b> An array of size <code>numRoads</code> indicating the name of each road.
+                        </li>
+                        <li>
+                             <b><code>greenTimes (int[]):</code></b> An array of size <code>numRoads</code> indicating the green time for each road.
+                        </li>
+                   </ol>
+                <p><span class="warning">Note</span>: The two array parameters (<i><code>names</code> and <code>greenTimes</code></i>) should be equal in size and have corresponding indices (<i>i.e. <code>names[i]</code> corresponds to a road having a green time of <code>geenTimes[i]</code></i>).</p>
+                
+                
+                <h4>Initialization</h4>
+                
+                <p> Before the first time step, your program should create a new array of <code>TwoWayRoads</code> equal in size to the array parameters. A new <code>TwoWayRoad</code> object should be created at each index of this new array, initializing each new road with the <code>name</code> and <code>greenTime</code> at the corresponding index of the array parameters (<i><code>names</code> and <code>greenTimes</code>, respectively</i>). Once this array has been created and initialized, it should be used to construct an <code>Intersection</code> instance, which will be used to keep track of the light during simulation and allow vehicles to pass through the intersection. Lastly, a <code>BooleanSourceHW4</code> object should be created (<i>initializing it&#39;s <code>probability</code> member variable to <code>arrivalProbability</code></i>) which will be used to determine if vehicles have arrived during simulation.
+                </p>
+                
+                <p> During execution, the &#39;light&#39; will be simulated using the <code>lightIndex</code> member variable of the <code>Intersection</code> instance. This variable indicates the index of the road in the <code>roads</code> array which currently has the active light (<i>the current active light may be in the <code>GREEN</code> state or <code>LEFT_TURN</code> state, as described by the <code>LightValue</code> enum below</i>). When the <code>Intersection</code> instance is constructed, it initializes the <code>lightIndex</code> member variable to <code>0</code> and the <code>countdownTimer</code> to the <code>greenTime</code> member variable of <code>roads[lightIndex]</code>. After each time step, the timer is decremented by 1. Once the timer reaches <code>0</code>, the <code>lightIndex</code> is incremented, <span class="warning">returning back to <code>0</code> if it equals the size of the <code>roads</code> array</span> (<i>i.e. modular arithmetic</i>), and the <code>countdownTimer</code> is again set to <code>roads[lightIndex]</code>. This process repeats continually until the simulation ends. 
+                    
+                </p>
+                
+                <h4>Time Steps</h4>
+                
+                <p> On each time step, the program should determine if a vehicle has arrived for <i>each</i> lane in the intersection <i>(all 12)</i>. This can be accomplished by calling the <code>occursHW4()</code> method on the <code>BooleanSourceHW4</code> object for each lane. If a vehicle has arrived (<i>i.e. <code>occursHW4()</code> returns <code>true</code></i>), the program should create a new <code>Vehicle</code> object, initialize it&#39;s <code>timeArrived</code> member variable to the current time step value, and enqueue the vehicle onto the appropriate lane.
+                </p>
+                    
+                <p> After all lanes have been considered for arrival, <code>roads[lightIndex]</code> should pass vehicles through the intersection - one vehicle per lane, but <b>only</b> if the lane is allowed to proceed (<i>see the <code>LightValue</code> enum below for more detail on the light rules</i>). When a vehicle is dequeued from a lane, the program should add the vehicle&#39;s wait time to the total wait time for the simulation, and increment the number of cars passed through the intersection. The vehicle&#39;s wait time can be calculated by subtracting it&#39;s <code>arrivalTime</code> from the current time step value. If all lanes are empty after having been dequeued (<i>or ignored if they were empty</i>), then the program should preempt the countdown timer and switch the light to the next road.
+                </p>
+                
+                <p> <span class="green">Note:</span> On any particular time step, a <b>maximum of 6</b> vehicles may be queued onto lanes of the intersection, and a <b>maximum of 4</b> vehicles may pass through an intersection (<i>if the <code>lightValue</code> is <code>GREEN</code>, then the right and middle lanes can proceed in both directions, but the left lanes cannot</i>). In other words, any lane can be enqueued and dequeued only <b>once</b> on a given time step. A case you should consider is if a lane of the road with the green light is empty at the beginning of the time step, and has an arrival during the time step. If this happens, then the vehicle will be enqueued and dequeued from the lane during the same time step, resulting in a wait time of zero (<i>this is the equivalent of driving through a green light without having to wait</i>).
+                </p>
+                
+                <p> After these operations have been completed, the simulation should output the current state of the intersection to the user. This should include the number of cars on each of the 12 lanes of the intersection, as well as their current wait times. In addition, the current total wait time, total number of cars, and average wait time should be shown in tabular form (<i>please see the sample I/O for examples</i>). The program now proceeds to the next time step, repeating the process until the time step value is equal to <code>simulationTime</code>.
+                </p>
+                
+                <h4>Finalization</h4>
+                
+                <p>Once the time step counter reaches <code>simulationTime</code>, no more vehicles should arrive at the intersection. <span class="green">The simulation should proceed as normal until <b>all</b> lanes have been cleared and the intersection is empty</span>. Once the intersection is clear of vehicles, the simulation should end and the program should display the results to the user. The output parameters should include the total wait time by all vehicles, the total number of vehicles passing through the intersection, and the average wait time for vehicles during the simulation.</p>
+                
+                
+                
+                <p>The entire procedure is summarized by the following <i>Activity Diagram</i>:</p>
+
+                
+                <h2 align="center" style="text-align: center;">
+                    <img style="width:60%;max-width:1000px;" src="http://www.cs.stonybrook.edu/~cse214/hw/hw4-images/Algorithm.jpg"/> <br/> <br/>
+                    Activity Diagram
+                </h2> 
+                
+                <hr/>
+                
+                
+                <h2>Required Classes</h2>
+    
+                The following outlines the required classes you must implement for this assignment. You may write additional classes if you feel they will help you implement this assignment, as well as private helper methods. However, each of the classes and methods below <b>must</b> be included if you are to receive full credit. Also note that you should <b>not</b> include any method which exposes references to private member variables or allows a user to interact with the class in an undefined way (<i>if you are unsure, please contact a TA or the instructor</i>). The following <i>UML Diagram</i> outlines the class relationship structure:
+    
+                
+                <h2 align="center" style="text-align: center;">
+                    <img style="width:90%;max-width:1400px;" src="http://www.cs.stonybrook.edu/~cse214/hw/hw4-images/Intersection.jpg"/> <br/> <br/>
+                    UML Diagram
+                </h2> 
+                
+            <h3><b>1. <code>BooleanSourceHW4</code> class</b> </h3> 
+                
+                <p>(Provided as attachment to the specification) A  class called <code>BooleanSourceHW4</code> which abstracts a random occurrence generator. This class should be constructed with an initial arrival probability (<i>0.0 &lt; <code>probability</code> ≤ 1.0</i>) which represents the likelihood that a <code>Vehicle</code> will arrive at any particular lane at the beginning of each time step. This method should also contain a single method, <code>occursHW4()</code> which returns <code>true</code> if a vehicle arrives and <code>false</code> it does not.</p>
+ 
+                <ul>
+                    <li>
+                        <p><b><code>private double probability</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>public BooleanSourceHW4(<span style="color:red;">double</span> initProbability)</code></b></p>
+
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Constructor which initializes the <code>probability</code> to the indicated parameter.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>initProbability</code>
+                                        <ul>
+                                            <li>Probability used to construct this <code>BooleanSourceHW4</code> object. The probability should be greater than 0 and less than or equal to 1.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li><code>0 &lt; initProbability ≤ 1</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>initProbability ≤ 0</code> or <code>initProbability &gt; 1</code>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+							<li><em><span style="color:red;">NOTE:</span></em><br/>
+                                <ul>
+                                    <li><code style="color:red;">This class works with hw4randomNumbers.txt and hw4randomFlags.txt text files that are attached to the homework specification.</code> 
+                                      
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public <span style="color: red;">boolean</span> occursHW4()</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>
+                                        Method which returns <code>true</code> with the probability indicated by the member variable <code>probability</code>.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li>
+                                        <code>probability</code> is a valid probability (<i><code>0 &lt; probability ≤ 1</code></i>).
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Returns:</em><br/>
+                                <ul>
+                                    <li>
+                                        Boolean value indicating whether an event has occurred or not.
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em><span class="green">Note</span>:</em><br/>
+                                <ul>
+                                    <li>
+                                        This method will  utilize  a saved random number to generate the random occurrence.
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+    
+            <h3><b>2. <code>LightValue</code> enum</b></h3>
+            
+            <p>Write a simple <code>Enum</code> named <code>LightValue</code>, which lists the phases a particular stoplight lane may be in. These states should include <code>GREEN</code>, <code>RED</code>, and <code>LEFT_SIGNAL</code> (<i>we are considering yellow to be part of green</i>). Each <code>TwoWayRoad</code> instance (<i>defined below</i>) will have its own <code>LightValue</code>, which should correspond to the following rules:</p>
+            
+            <ol>
+               <li><code><b>GREEN</b></code> indicates that the <i><b>right</b></i> and <i><b>middle</b></i> lanes may proceed, but the <i><b>left</b></i> lane <span class="warning">cannot</span> (<i>for both directions</i>).</li> 
+               <li><code><b>RED</b></code> indicates that  <span class="warning">no lane</span> may proceed (<i>for both directions</i>).</li> 
+               <li><code><b>LEFT_SIGNAL</b></code> indicates that <i><b>left</b></i> can proceed, but the <i><b>right</b></i> and <i><b>middle</b></i> lanes <span class="warning">cannot</span> (<i>for both directions</i>).</li> 
+            </ol>
+            
+            <p></p>Cars in a particular lane may proceed (dequeue one car per time interval) when it is their turn to go, according to the rules above. If you still need help with Java <code>Enum</code> types, you can read about them in this <a rel="noopener" href="https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html">Java tutorial</a>. 
+                                    
+                
+            <h3><b>3. <code>Vehicle</code> Class</b></h3>
+            
+                <p>Write a fully documented class named <code>Vehicle</code>. This class represents a car which passes through the intersection. Each instance must contain the <code>serialId</code> (the first car to arrive at the intersection is <code>serialId 1</code>, the second car to arrive is <code>serialId 2</code>, the <code>n</code>&#39;th car to arrive will have <code>serialId &gt;n</code>) and the time it arrived (stored as an <code>int</code>). The car must be initialized with a <code>serialId</code> and the time it arrived.  The serial counter is static and stores the number of vehicles that have arrived at the intersection so far. It is the only variable that is modifiable.</p>
+
+                <p>The Vehicle class itself is actually <a rel="noopener" href="https://en.wikipedia.org/wiki/Immutable_object">immutable</a>. This means once it has been constructed, no data within the instance can be changed (<i>the static <code>serialCounter</code> can and should be incremented on each constructor call</i>). From the UML diagram, note that the public constructor takes all the member variables as arguments. Data can still be read via the getter methods.
+                </p>
+                <ul>
+                    <li>
+                        <p><b><code>private static int serialCounter = 0</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private int serialId</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private int timeArrived</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>public Vehicle(int initTimeArrived)</code></b></p>
+
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Default Constructor. You should automatically increment the serialCounter, and set the serialId to its new value.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>initTimeArrived</code>
+                                        <ul>
+                                            <li>Time the vehicle arrived at the intersection.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li><code>initTimeArrived &gt; 0</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>initTimeArrived ≤ 0</code>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <h3><b>4. <code>VehicleQueue</code> class</b></h3>
+
+                <p>Lanes in our simulator will be modelled as a <code>Queue</code> of <code>Vehicles</code>. You may 
+				implement a <code>Queue</code> of vehicles however you like, and are encouraged to 
+				use any Java API class you prefer. 	
+				Remember that the <code>VehicleQueue</code> class 
+				<b>must</b> implement the following methods in order to comply with the 
+				<code>Queue ADT</code>:</p>
+                
+                <ul>
+                    <li><b><code>void enqueue(Vehicle v)</code></b></li>
+                    <li><b><code>Vehicle dequeue()</code></b></li>
+                    <li><b><code>int size()</code></b></li>
+                    <li><b><code>boolean isEmpty()</code></b></li>
+                </ul>
+                
+				<p style="color:red;">Note: If you decide to use a Java API class to implement <code>VehicleQueue</code>, you must use inheritance (extend a Java API class) 
+				to simplify the class definition. </p>
+         
+            <h3><b>5. <code>TwoWayRoad</code> Class</b></h3>
+                
+                <p>Write a fully documented class called <code>TwoWayRoad</code> that represents one of the roads in our intersection. Each road it bi-directional, with each direction having <b>three </b> lanes - a <i>left turn</i> lane, a <i>middle</i> lane, and a <i>right turn</i> lane. Lanes, modelled by <code>VehicleQueues</code>, hold the vehicles before they pass through the intersection. These lanes will be stored in a two dimensional array - the first index indicates the <i>direction of travel</i> on the road, and the second index indicates the <i>lane on the road</i>. In order to access a specific direction, you should use the constants <code>FORWARD_WAY</code> and <code>BACKWARD_WAY</code> to access the directions of the road. In order to access specific lanes in a particular direction, you should use the second dimension of the array, accessed by the consants <code>LEFT_LANE, MIDDLE_LANE, RIGHT_LANE</code>. Your <code>TwoWayRoad</code> class must be able to check whether any of the lanes in the road have <code>Vehicle</code> objects in them by using the <code>boolean isEmpty(int wayIndex, int laneIndex)</code> method. It should also be able to add <code>Vehicle</code> objects to the lanes using the <code>void enqueueVehicle(int wayIndex, int laneIndex, Vehicle vehicle)</code> method. Furthermore, you should allow vehicles to pass through the intersection, adding the <code>Vehicles</code> that have been dequeued to an array to returned to the caller.
+                <p>Brief:</p>
+                <ul>
+                    <li>
+                        <p><b><code>public final int FORWARD_WAY = 0;</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>public final int BACKWARD_WAY = 1;</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>public final int NUM_WAYS = 2;</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>public final int LEFT_LANE = 0;</code></b></p>
+                    </li>
+                     <li>
+                        <p><b><code>public final int MIDDLE_LANE = 1;</code></b></p>
+                    </li>
+                     <li>
+                        <p><b><code>public final int RIGHT_LANE = 2;</code></b></p>
+                    </li>
+                     <li>
+                        <p><b><code>public final int NUM_LANES = 3;</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private String name</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private int greenTime</code></b></p>
+                        <ul>
+                            <li>The <b>maximum total</b> number of steps this road can be active (<i>this number is <b>inclusive</b> of the <code>leftSignalGreenTime</code></i>).</li>
+                        </ul>
+                    </li>
+                     <li>
+                        <p><b><code>private int leftSignalGreenTime</code></b></p>
+                        <ul>
+                            <li>The number of steps this road remains in the <code>LEFT_SIGNAL</code> state.</li>
+                            <li>Should be initialized to <code>1.0/NUM_LANES * greenTime</code> in the constructor.</li>
+                        </ul>
+                    </li>
+                      <li>
+                        <p><b><code>private VehicleQueue lanes[NUM_WAYS][NUM_LANES]</code></b></p>
+                    </li>
+                      <li>
+                        <p><b><code>private LightValue lightValue</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>public TwoWayRoad(String initName, int initGreenTime)</code></b></p>
+
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Default Constructor. You should automatically initialize the array and all of its member objects, as well as initializing leftSignalGreenTime to <code>1.0/NUM_LANES * initGreenTime</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>initName</code>
+                                        <ul>
+                                            <li>The name of the road.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>initGreenTime</code>
+                                        <ul>
+                                            <li>The amount of time that the light will be active for this particular road. This is the total of the time the light should display green for cars going forward/turning right, as well as for cars going left.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li><code>initGreenTime &gt; 0</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>This road is initialized with all lanes initialized to empty queues, and all instance variables initialized.</li>
+                                </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>initGreenTime ≤ 0 or initName=null</code>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public Vehicle[] proceed(int timerVal)</code></b></p>
+
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Executes the passage of time in the simulation. The <code>timerVal</code> represents the current value of a countdown timer counting down total green time steps. The light should be in state <code>GREEN</code> any time the timerval is greater than leftSignalGreenTime. When timerVal is less than or equal to<code> leftSignalGreenTime</code>, the light should change to <code>LEFT_SIGNAL</code>. After the execution of timerVal == 1, or if there are no vehicles left the light should change state to <code>RED</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>timerVal</code>
+                                        <ul>
+                                            <li>The current timer value, determines the state of the light.</li>
+                                        </ul>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                             <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li>The TwoWayRoad object should be instantiated.</li>
+                                </ul>
+                            </li>
+                            <li><em>Returns:</em><br/>
+                                <ul>
+                                    <li>An array of <code>Vehicles</code> that has been dequeued during this time step.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>Any <code>Vehicles</code> that should have been dequeued during this time step should be dequeued and placed in the return array.</li>
+                                </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>timerval ≤ 0</code>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public void enqueueVehicle(int wayIndex, int laneIndex, Vehicle vehicle)</code></b></p>
+
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Enqueues a vehicle into a the specified lane.
+                                </li></ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>wayIndex</code>
+                                        <ul>
+                                            <li>The direction the car is going in.</li>
+                                        </ul>
+                                    </li>
+                                     <li><code>laneIndex</code>
+                                        <ul>
+                                            <li>The lane the car arrives in.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>vehicle</code>
+                                        <ul>
+                                            <li>The vehicle to enqueue; must not be null.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                             <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li>The TwoWayRoad object should be instantiated.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>Given that the vehicle specified was not <code>null</code>, and the position given was not invalid (and no exception was thrown), the vehicle should be added to the end of the proper queue. </li>
+                                </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>wayIndex &amp;gt 1 || wayIndex &amp;lt 0 || laneIndex &amp;lt 0 || laneIndex &amp;gt 2</code> or <code>vehicle==null</code></li>.
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li><p><b><code>public boolean isLaneEmpty(int wayIndex, int laneIndex)</code></b></p>
+
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Checks if a specified lane is empty.
+                                </li></ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>wayIndex</code>
+                                        <ul>
+                                            <li>The direction of the lane.</li>
+                                        </ul>
+                                    </li>
+                                     <li><code>laneIndex</code>
+                                        <ul>
+                                            <li>The index of the lane to check.</li>
+                                        </ul>
+                                    </li>
+                                    
+                                </ul>
+                            </li>
+                             <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li>The <code>TwoWayRoad</code> object should be instantiated.</li>
+                                </ul>
+                            </li>
+                              <li><em>Returns:</em><br/>
+                                <ul>
+                                    <li><code>true</code> if the lane is empty, else <code>false</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>The <code>TwoWayRoad</code> object should remain unchanged </li>
+                                </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>wayIndex &amp;gt 1 || wayIndex &amp;lt 0 || laneIndex &amp;lt 0 || laneIndex &amp;gt 2</code>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                
+               <h3><b>6. <code>Intersection</code> class</b></h3>
+               
+               <p>Write a fully documented class named <code>Intersection</code>. This class represents a crossing of two or more roads at a stop light in our simulation. The class consists of an array of <code>TwoWayRoad</code> objects representing the crossing roads, as well as a countdown timer and a light index. <code>Intersection</code> must contain the following private member variables: <code><b>roads</b> (TwoWayRoad[])</code>, <code><b>lightIndex</b> (int)</code>, and <code><b>countdownTimer</b> (int)</code>. The <code>Intersection</code> class must also feature the following public methods: <code><b>void timeStep()</b></code>, and <code><b>void enqueueVehicle(int roadIndex, int wayIndex, int laneIndex)</b></code>, as well as a <code><b>display()</b></code> method which prints the intersection to the terminal.</p>
+
+                <ul>
+                    <li>
+                        <p><b><code>private TwoWayRoad[] roads</code></b></p>
+                        <ul>
+                            <li>Array of roads which cross at this intersection.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>private int lightIndex</code></b></p>
+                        <ul>
+                            <li>Indicates the road in <code>roads</code> with the active light (<i>either green or left turn signal</i>).</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>private int countdownTimer</code></b></p>
+                        <ul>
+                            <li>Tracks the remaining time steps available for the road currently indicated by <code>lightIndex</code>.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public Intersection(TwoWayRoads[] initRoads)</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Constructor which initializes the <code>roads</code> array.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>initRoads</code>
+                                        <ul>
+                                            <li>Array of roads to be used by this intersection.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li><code>initRoads</code> is not <code>null</code>.</li>
+                                    <li>Length of <code>initRoads</code>is less than or equal to <code>MAX_ROADS</code>.</li>
+                                    <li>All indices of <code>initRoads</code> are not <code>null</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>This object has been initialized to a <code>Intersection</code> object managing the <code>roads</code> array.</li>
+                               </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>initRoads</code> is <code>null</code>.</li>
+                                            <li>If any index of <code>initRoads</code> is <code>null</code>.</li>
+                                            <li><code>initRoads.length &gt; MAX_ROADS</code>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public Vehicle[] timeStep() </code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Performs a single iteration through the intersection. This method should apply all the logic defined in this specification related to the passing of cars through the intersection and switching the selected road (<i><span class="green">Note:</span> <code>LightValue</code> changes for a particular road should be handled within the <code>TwoWayRoad</code> class itself and not within this method</i>). Please refer to the <code>Simulation Procedure</code> section above for instructions on how to apply this procedure.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>The intersection has dequeued all lanes with a green light (<i>if non-empty</i>) and returned an array containing the <code>Vehicles</code>.</li>
+                               </ul>
+                            </li>
+                            <li><em>Returns:</em><br/>
+                                <ul>
+                                    <li>An array of <code>Vehicles</code> which have passed though the intersection during this time step.</li>
+                               </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public void enqueueVehicle(int roadIndex, int wayIndex, int laneIndex, Vehicle vehicle) </code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Enqueues a vehicle onto a lane in the intersection.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>roadIndex</code>
+                                        <ul>
+                                            <li>Index of the road in <code>roads</code> which contains the lane to enqueue onto.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>wayIndex</code>
+                                        <ul>
+                                            <li>Index of the direction the vehicle is headed. Can either be <code>TwoWayRoad.FORWARD</code> or <code>TwoWayRoad.BACKWARD</code></li>
+                                        </ul>
+                                    </li>
+                                    <li><code>laneIndex</code>
+                                        <ul>
+                                            <li>Index of the lane on which the vehicle is to be enqueue. Can either be <code>TwoWayRoad.RIGHT_LANE</code>, <code>TwoWayRoad.MIDDLE_LANE</code>, or <code>TwoWayRoad.LEFT_LANE</code>.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>vehicle</code>
+                                        <ul>
+                                            <li>The <code>Vehicle</code> to enqueue onto the lane.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li><code>0 ≤ roadIndex &lt; roads.length</code>.</li>
+                                    <li><code>0 ≤ wayIndex &lt; TwoWayRoad.NUM_WAYS</code>.</li>
+                                    <li><code>0 ≤ laneIndex &lt; TwoWayRoad.NUM_LANES</code>.</li>
+                                    <li><code>vehicle != null</code>.</li>
+                               </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>vehicle</code> is <code>null</code>.</li>
+                                            <li>If any of the index parameters above are not within the valid range..</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public void display()</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Prints the intersection to the terminal in a neatly formatted manner. See the sample I/O for an example of what this method should display.</li>
+                                </ul>
+                            </li>
+                            <li><em><span class="green">Note</span>:</em><br/>
+                                <ul>
+                                    <li>
+                                        The sample I/O shown below requires you to print some of the <code>VehicleQueues</code> in reverse. Think about how you might be able to do this using a stack (<i>e.g. <code>java.util.Stack</code></i>).
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+               
+                <h3><b>7. <code>IntersectionSimulator</code> class</b></h3>
+
+               
+               
+                <p>Write a fully documented class named <code>IntersectionSimulator</code>. This class represents the manager of the simulation -- it does the heavy lifting, per se. The main function&#39;s responsibility is to get the parameters for the simulation and pass them to the <code>simulate()</code> method, either by interactive prompt or command line (See below).</p>
+
+                <ul>
+                    <li>
+                        <p><b><code>public static void main(String args[])</code></b></p>
+                        <ul>
+                            <li>Start for application, asks user for following values: <code>simulationTime (int), arrivalProbability (double), numRoads (int)</code>, a name for each road, and a &quot;green&quot; time for each road. This method also parses command line for these args. If <code>args.length &lt; 5</code>, the above is read in at execution time. Otherwise, refer to the end of this document on how to parse the command line arguments.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public static void simulate(int simulationTime, double arrivalProbability, String[] roadNames, int[] maxGreenTimes):</code></b></p>
+                        <ul>
+                            <li>
+                                This method does the actual simulation. Above, a <i>Activity Diagram</i> is presented to demonstrate how the simulation works. This method actually implements the algorithm described by that diagram, using <code>Intersection</code>, <code>BooleanSourceHW4</code>, and <code>TwoWayRoad</code>.<br/><br/>
+                                
+                                <span class="green">Note:</span> The <code>simulationTime</code> is how long cars can &#39;appear&#39;. The actual simulation can last longer -- long enough for every car to pass the intersection.
+                                
+                            </li>
+                        </ul>
+                    </li>
+                    
+                </ul>
+                
+                <p><span class="warning">Warning:</span> You should make sure that you catch <b>ALL</b> exceptions that you throw anywhere in your code. Exceptions are used to indicate illegal or unsupported operations so that your program can handle unexpected events gracefully and prevent a crash. Your program should <b>NOT</b> crash from any of the above exceptions (<i>it should not crash from any exception, but especially not one that you throw yourself</i>).</p>
+                
+            </p></div> 
+            
+            <hr/>
+            
+            <h2>Input Format:</h2>
+            
+                <p>The simulator should be run either by prompting the user for input at the beginning of the program or by parsing the command line arguments passed to the program. You may assume that the arguments will be passed in in the proper order and of the correct data type.</p>
+            
+                <h4>Command Line Arguments</h4>
+                <p>
+                    Command line arguments are text values passed into a program at run time. For example, to compile your java files, you could run javac *.java in a terminal. In this homework assignment, you will be able to start your program with the following options in order:
+                    <code>
+                    <ul>
+                        <li>simulationTime</li>
+                        <li>arrivalProbability</li>
+                        <li>numRoads</li>
+                        <li>[numRoads long list of names (Strings)]</li>
+                        <li>[numRoads long list of maxGreenTimes (ints)]</li>
+                        
+                    </ul>
+                    </code>
+                    Example execution command line:<br/><br/>
+                    
+                    <code>java IntersectionSimulator 5 0.25 3 Road1 Road2 Road3 3 4 5</code><br/><br/>
+                    
+                    To make it easier for you to include command line arguments in your code, here is some sample code for parsing required arguments:
+                    <pre>
+    if (args.length &gt; 1) {
+    
+    	int simTime    = Integer.parseInt(args[0]);
+    	double prob    = Double.parseDouble(args[1]);
+    	int numRoads   = Integer.parseInt(args[2]);
+    	String[] names = new String[numRoads];
+    	String[] times = new int[numRoads];
+    	
+    	for (int i = 0; i &lt; numRoads; ++i) {
+    		names[i] = args[3 + i];
+    		times[i] = Integer.parseInt(args[3 + numRoads + i]);
+    	}
+    	
+    	// process args in simTime, prob, numRoads, names, times.
+    
+    }
+    // Else: interactive
+                    </pre>
+                    To test in Eclipse, go to Menu Bar &gt; Project &gt; Properties &gt; Run/Debug settings &gt; Edit the listed run configuration (usually the name of your project) &gt; Arguments tab.
+                    <br/><br/>
+                </p>
+            
+            <hr/>
+            
+            <h2>Output Format:</h2>
+            
+            <p>All lists must be printed in a nice and tabular form as shown in the sample output. You may use C style formatting as shown in the following example. The example below shows two different ways of displaying the name and address at pre-specified positions 21, 26, 19, and 6 spaces wide. If the ‘-’ flag is given, then it will be left-justified (padding will be on the right), else the region is right-justified. The ‘s’ identifier is for strings, the ‘d’ identifier is for integers. Giving the additional ‘0’ flag pads an integer with additional zeroes in front.</p>
+            
+<pre>
+    String name = &quot;Doe Jane&quot;;
+    String address = &quot;32 Bayview Dr.&quot;;
+    String city = &quot;Fishers Island, NY&quot;;
+    int zip = 6390;
+    
+    System.out.println(String.format(&quot;%-21s%-26s%19s%06d&quot;, name, address, city, zip));
+    System.out.printf(&quot;%-21s%-26s%19s%06d&quot;, name, address, city, zip);
+
+<span class="comment">   // Output</span>
+    Doe Jane             32 Bayview Dr.             Fishers Island, NY 06390
+    Doe Jane             32 Bayview Dr.             Fishers Island, NY 06390
+            </pre>
+            
+            <hr/>
+            
+            <h2>Sample Input/Output:</h2>
+            
+<pre>
+<span class="code">
+<span class="comment">// Comment in green</span>, <span class="input">input in red</span>, output in black
+</span>
+ 
+Sample I/O:
+
+Welcome to IntersectionSimulator 2021
+
+Input the simulation time: <span class="input">6</span>
+Input the arrival probability: <span class="input">0.2</span>          <span class="comment">// chance of car entering a lane, for all lanes.</span>
+Input number of Streets: <span class="input">2</span>
+Input Street 1 name: <span class="input">Route 216</span>              <span class="comment">// must be unique names &amp; not the empty string</span>
+Input Street 2 name: <span class="input">Route 216</span>              <span class="comment">// on duplicate detected, re-prompt for name</span>
+Duplicate Detected.
+Input Street 2 name: <span class="input">320 Road</span>
+Input max green time for Route 216: <span class="input">4</span>
+Input max green time for 320 Road: <span class="input">3</span>
+
+Starting Simulation...
+
+################################################################################
+
+Time Step: 1
+
+    Green Light for Route 216.  <span class="comment">// Select first road at start.</span>
+    Timer = 4                   <span class="comment">// Initialize timer to max green time for road.</span>
+    
+    ARRIVING CARS:
+        Car[001] entered Route 216, going FORWARD in LEFT lane.
+        Car[002] entered Route 216, going BACKWARD in MIDDLE lane.
+        Car[003] entered 320 Road, going FORWARD in RIGHT lane.
+
+    PASSING CARS:
+        <span class="comment">// Car[001] can&#39;t pass since 216-FORWARD-LEFT has red light (x).</span>
+        Car[002] passes through. Wait time of 0. 
+        <span class="comment">// Car[003] can&#39;t pass since 320-FORWARD-RIGHT has red light (x).</span>
+
+
+    Route 216:                 
+                           FORWARD               BACKWARD
+    ==============================               ===============================
+                             [001] [L] x     [R]      
+    ------------------------------               -------------------------------
+                                   [M]       [M] <span class="comment">// [002] passed through.</span>
+    ------------------------------               -------------------------------
+                                   [R]     x [L] 
+    ==============================               ===============================
+    
+    320 Road:                  
+                           FORWARD               BACKWARD                  
+    ==============================               ===============================
+                                   [L] x   x [R]        
+    ------------------------------               -------------------------------
+                                   [M] x   x [M]     
+    ------------------------------               -------------------------------
+                             [003] [R] x   x [L] 
+    ==============================               ===============================
+
+
+    STATISTICS:
+        Cars currently waiting: 2 cars
+        Total cars passed:      1 cars
+        Total wait time:        0 turns
+        Average wait time:      0.00 turns
+
+################################################################################
+
+Time Step: 2
+
+    Green Light for Route 216.
+    Timer = 3                   <span class="comment">// Timer decrements</span>
+
+    ARRIVING CARS:
+        Car[004] entered Route 216, going FORWARD in MIDDLE lane.
+        Car[005] entered Route 216, going FORWARD in RIGHT lane.
+        Car[006] entered Route 216, going BACKWARD in RIGHT lane.
+        Car[007] entered 320 Road, going FORWARD in LEFT lane.
+        Car[008] entered 320 Road, going BACKWARD in MIDDLE lane.
+
+    PASSING CARS:
+        Car[004] passes through. Wait time of 0.
+        Car[005] passes through. Wait time of 0.
+        Car[006] passes through. Wait time of 0.
+
+
+    Route 216:                 
+                           FORWARD               BACKWARD
+    ==============================               ===============================
+                             [001] [L] x     [R] <span class="comment">// [006] passed through.</span>
+    ------------------------------               -------------------------------
+          <span class="comment">[004] passed through. //</span> [M]       [M]   
+    ------------------------------               -------------------------------
+          <span class="comment">[005] passed through. //</span> [R]     x [L] 
+    ==============================               ===============================
+    
+    320 Road:                  
+                           FORWARD               BACKWARD                  
+    ==============================               ===============================
+                             [007] [L] x   x [R]        
+    ------------------------------               -------------------------------
+                                   [M] x   x [M] [008]
+    ------------------------------               -------------------------------
+                             [003] [R] x   x [L] 
+    ==============================               ===============================
+
+
+    STATISTICS:
+        Cars currently waiting: 4 cars
+        Total cars passed:      4 cars
+        Total wait time:        0 turns
+        Average wait time:      0.00 turns
+
+################################################################################
+
+Time Step: 3
+
+    Green Light for Route 216.
+    Timer = 2
+    
+    ARRIVING CARS:
+        Car[009] entered Route 216, going FORWARD in RIGHT lane.
+        Car[010] entered Route 216, going BACKWARD in LEFT lane.
+        Car[011] entered 320 Road, going FORWARD in MIDDLE lane.
+        Car[012] entered 320 Road, going BACKWARD in RIGHT lane.
+
+    PASSING CARS:
+        Car[009] passes through. Wait time of 0.
+        
+
+    Route 216:                 
+                           FORWARD               BACKWARD
+    ==============================               ===============================
+                             [001] [L] x     [R] 
+    ------------------------------               -------------------------------
+                                   [M]       [M]   
+    ------------------------------               -------------------------------
+          [009] passed through. // [R]     x [L] [010]
+    ==============================               ===============================
+    
+    320 Road:                  
+                           FORWARD               BACKWARD                  
+    ==============================               ===============================
+                             [007] [L] x   x [R] [012]  
+    ------------------------------               -------------------------------
+                             [011] [M] x   x [M] [008]
+    ------------------------------               -------------------------------
+                             [003] [R] x   x [L] 
+    ==============================               ===============================
+
+
+    STATISTICS:
+        Cars currently waiting: 7 cars
+        Total cars passed:      5 cars
+        Total wait time:        0 turns
+        Average wait time:      0.00 turns
+
+################################################################################
+
+Time Step: 4
+
+    Left Signal for Route 216. <span class="comment">// Light switches to left arrow.</span>
+    Timer = 1  
+
+    ARRIVING CARS:
+        Car[013] entered Route 216, going FORWARD in MIDDLE lane.
+        Car[014] entered 320 Road, going FORWARD in MIDDLE lane.
+        Car[015] entered 320 Road, going BACKWARD in RIGHT lane.
+
+    PASSING CARS:
+        Car[001] passes through. Wait time of 3.
+        Car[010] passes through. Wait time of 1.
+        
+
+    Route 216:                 
+                           FORWARD               BACKWARD
+    ==============================               ===============================
+                                   [L]     x [R] 
+    ------------------------------               -------------------------------
+                             [013] [M] x   x [M]   
+    ------------------------------               -------------------------------
+                                   [R] x     [L]  
+    ==============================               ===============================
+    
+    320 Road:                  
+                           FORWARD               BACKWARD                  
+    ==============================               ===============================
+                             [007] [L] x   x [R] [012][015]
+    ------------------------------               -------------------------------
+                        [014][011] [M] x   x [M] [008]
+    ------------------------------               -------------------------------
+                             [003] [R] x   x [L] 
+    ==============================               ===============================
+
+
+    STATISTICS:
+        Cars currently waiting: 8 cars
+        Total cars passed:      7 cars
+        Total wait time:        4 turns
+        Average wait time:      0.57 turns
+
+################################################################################
+
+Time Step: 5
+
+    Green Light for 320 Road.
+    Timer = 3 
+
+    ARRIVING CARS:
+        Car[016] entered Route 216, going FORWARD in LEFT lane.
+        Car[017] entered Route 216, going BACKWARD in MIDDLE lane.
+        Car[018] entered 320 Road, going FORWARD in RIGHT lane.
+
+    PASSING CARS:
+        Car[011] passes through. Wait time of 2.
+        Car[003] passes through. Wait time of 4.
+        Car[012] passes through. Wait time of 2.
+        Car[008] passes through. Wait time of 3.
+        
+        
+
+    Route 216:                 
+                           FORWARD               BACKWARD
+    ==============================               ===============================
+                             [016] [L] x   x [R] 
+    ------------------------------               -------------------------------
+                             [013] [M] x   x [M] [017]  
+    ------------------------------               -------------------------------
+                                   [R] x   x [L]  
+    ==============================               ===============================
+    
+    320 Road:                  
+                           FORWARD               BACKWARD                  
+    ==============================               ===============================
+                             [007] [L] x     [R] [015]
+    ------------------------------               -------------------------------
+                             [014] [M]       [M] 
+    ------------------------------               -------------------------------
+                             [018] [R]     x [L] 
+    ==============================               ===============================
+
+
+    STATISTICS:
+        Cars currently waiting:  7 cars
+        Total cars passed:       11 cars
+        Total wait time:         15 turns
+        Average wait time:       1.36 turns
+
+################################################################################
+
+Time Step: 6
+
+    Green Light for 320 Road.
+    Timer = 2  
+    
+    ARRIVING CARS:
+        Car[019] entered Route 216, going FORWARD in MIDDLE lane.
+        Car[020] entered Route 216, going BACKWARD in RIGHT lane.
+        Car[021] entered 320 Road, going BACKWARD in MIDDLE lane.
+
+    PASSING CARS:
+        Car[014] passes through. Wait time of 2.
+        Car[015] passes through. Wait time of 2.
+        Car[021] passes through. Wait time of 0.
+        Car[018] passes through. Wait time of 1. 
+        
+
+    Route 216:                 
+                           FORWARD               BACKWARD
+    ==============================               ===============================
+                             [016] [L] x   x [R] [020]
+    ------------------------------               -------------------------------
+                        [019][013] [M] x   x [M] [017]  
+    ------------------------------               -------------------------------
+                                   [R] x   x [L]  
+    ==============================               ===============================
+    
+    320 Road:                  
+                           FORWARD               BACKWARD                  
+    ==============================               ===============================
+                             [007] [L] x     [R]  
+    ------------------------------               -------------------------------
+                                   [M]       [M] 
+    ------------------------------               -------------------------------
+                                   [R]     x [L] 
+    ==============================               ===============================
+
+
+    STATISTICS:
+        Cars currently waiting:  6 cars
+        Total cars passed:       15 cars
+        Total wait time:         20 turns
+        Average wait time:       1.33 turns
+
+################################################################################
+
+Time Step: 7
+
+    Left Arrow for 320 Road.
+    Timer = 1  
+
+    Cars no longer arriving. <span class="comment">// Simulation time is up.</span>
+
+    ARRIVING CARS:
+        <span class="comment">// No more cars may arrive.</span>
+
+    PASSING CARS:
+        Car[007] passes through. Wait time of 5.
+        
+
+    Route 216:                 
+                           FORWARD               BACKWARD
+    ==============================               ===============================
+                             [016] [L] x   x [R] [020]
+    ------------------------------               -------------------------------
+                        [019][013] [M] x   x [M] [017]  
+    ------------------------------               -------------------------------
+                                   [R] x   x [L]  
+    ==============================               ===============================
+    
+    320 Road:                  
+                           FORWARD               BACKWARD                  
+    ==============================               ===============================
+                                   [L]     x [R]  
+    ------------------------------               -------------------------------
+                                   [M] x   x [M] 
+    ------------------------------               -------------------------------
+                                   [R] x     [L] 
+    ==============================               ===============================
+
+
+    STATISTICS:
+        Cars currently waiting:  5 cars
+        Total cars passed:       16 cars
+        Total wait time:         25 turns
+        Average wait time:       1.56 turns
+        
+################################################################################
+
+Time Step: 8
+
+    Green Light for Route 216.
+    Timer = 4 
+    
+    Cars no longer arriving. 
+
+    ARRIVING CARS:
+
+    PASSING CARS:
+        Car[013] passes through. Wait time of 4.
+        Car[020] passes through. Wait time of 2.
+        Car[017] passes through. Wait time of 3.
+        
+
+    Route 216:                 
+                           FORWARD               BACKWARD
+    ==============================               ===============================
+                             [016] [L] x     [R] 
+    ------------------------------               -------------------------------
+                             [019] [M]       [M]    
+    ------------------------------               -------------------------------
+                                   [R]     x [L]  
+    ==============================               ===============================
+    
+    320 Road:                  
+                           FORWARD               BACKWARD                  
+    ==============================               ===============================
+                                   [L] x   x [R]  
+    ------------------------------               -------------------------------
+                                   [M] x   x [M] 
+    ------------------------------               -------------------------------
+                                   [R] x   x [L] 
+    ==============================               ===============================
+
+
+    STATISTICS:
+        Cars currently waiting:  2 cars
+        Total cars passed:       19 cars
+        Total wait time:         34 turns
+        Average wait time:       1.79 turns
+    
+################################################################################
+
+Time Step: 9
+
+    Green Light for Route 216.
+    Timer = 3  
+    
+    Cars no longer arriving. 
+
+    ARRIVING CARS:
+
+    PASSING CARS:
+        Car[019] passes through. Wait time of 3.
+        
+
+    Route 216:                 
+                           FORWARD               BACKWARD
+    ==============================               ===============================
+                             [016] [L] x     [R]  
+    ------------------------------               -------------------------------
+                                   [M]       [M]    
+    ------------------------------               -------------------------------
+                                   [R]     x [L]  
+    ==============================               ===============================
+    
+    320 Road:                  
+                           FORWARD               BACKWARD                  
+    ==============================               ===============================
+                                   [L] x   x [R]  
+    ------------------------------               -------------------------------
+                                   [M] x   x [M] 
+    ------------------------------               -------------------------------
+                                   [R] x   x [L] 
+    ==============================               ===============================
+
+
+    STATISTICS:
+        Cars currently waiting:  1 cars
+        Total cars passed:       20 cars
+        Total wait time:         37 turns
+        Average wait time:       1.85 turns
+        
+################################################################################
+
+Time Step: 9
+
+    Left Arrow for Route 216.  <span class="comment">// Light preempted - no cars in middle or right lanes.</span>
+    Timer = 2  
+    
+    Cars no longer arriving. 
+
+    ARRIVING CARS:
+
+    PASSING CARS:
+        Car[016] passes through. Wait time of 4.
+        
+
+    Route 216:                 
+                           FORWARD               BACKWARD
+    ==============================               ===============================
+                                   [L]     x [R]  
+    ------------------------------               -------------------------------
+                                   [M] x   x [M]    
+    ------------------------------               -------------------------------
+                                   [R] x     [L]  
+    ==============================               ===============================
+    
+    320 Road:                  
+                           FORWARD               BACKWARD                  
+    ==============================               ===============================
+                                   [L] x   x [R]  
+    ------------------------------               -------------------------------
+                                   [M] x   x [M] 
+    ------------------------------               -------------------------------
+                                   [R] x   x [L] 
+    ==============================               ===============================
+
+
+    STATISTICS:
+        Cars currently waiting:  0 cars
+        Total cars passed:       21 cars
+        Total wait time:         41 turns
+        Average wait time:       1.95 turns
+        
+        
+################################################################################
+################################################################################
+################################################################################
+
+SIMULATION SUMMARY:
+
+    Total Time:           9 steps
+    Total vehicles:       21 vehicles
+    Longest wait time:    5 turns
+    Total wait time:      41 turns
+    Average wait time:    1.95 turns
+
+End simulation.
+ 
+
+</pre>
+</div>
+        <hr size="2" width="100%" align="center"/>
+        <p align="center" style="text-align:center;"><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:maroon;"><a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">Course Info</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/schedule.htm" target="_blank">Schedule</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/sections.htm" target="_blank">Sections</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">Announcients</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/homework.htm" target="_blank">Homework</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/exams.htm" target="_blank">Exams</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/help.htm" target="_blank">Help/FAQ</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/grades.htm" target="_blank">Grades</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">HOME</a></span></b><b> </b></p>
+
+
+
+<script type="module" src="https://s.brightspace.com/lib/bsi/20.23.2-175/unbundled/mathjax.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					if (document.querySelector('math') || /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(document.body.innerHTML)) {
+						document.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+							elm.setAttribute('style', 'display: block; height: 0.5rem;');
+						});
+
+						window.D2L.MathJax.loadMathJax({
+							'outputScale': 1.3,
+							'renderLatex': true
+						});
+					}
+				});</script><script type="module" src="https://s.brightspace.com/lib/bsi/20.23.2-175/unbundled/prism.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					document.querySelectorAll('.d2l-code').forEach(code => {
+						window.D2L.Prism.formatCodeElement(code);
+					});
+				});</script></body></html>

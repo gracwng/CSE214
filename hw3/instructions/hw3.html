@@ -1,0 +1,880 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body>
+
+
+
+    
+
+
+
+
+
+
+
+
+    
+    <div lang="EN-US">
+        
+            
+            <div>
+                
+                
+                <h2 align="center" style="text-align:center;">
+                    <img width="244" height="121" src="http://www.cs.stonybrook.edu/~cse214/images/logo.gif"/><br/><br/>
+                    <span class="hw-header">HOMEWORK 3 - Spring 2023</span>
+                </h2>  
+                
+                <hr/>
+                
+                <h3><b>HOMEWORK 3 - due <span style="color:black;">Tuesday, March 7th</span> no later than 7:00PM</b></h3>
+                
+                
+                <p><b>Reminders:</b></p>
+                <ul type="disc">
+				<li><b><span style="color:red;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+   Submit your files only via CodeGrade in the <a rel="noopener" href="https://mycourses.stonybrook.edu/d2l/le/content/358338/Home">Content page on Brightspace</a>. Access CodeGrade by clicking &quot;HW3 - CODEGRADE SUBMISSION LINK&quot; for your submission.</span></b><span></span></li>
+
+				<li><b><span style="color:red;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+   Use of a package is optional. If you wish to use it, make sure to name it &quot;hw3&quot; (all in lower case). Otherwise, you will lose points.</span></b><span></span></li>
+
+                    <li><b>Be sure your code follows the <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/codingstyle.htm" target="_blank">coding style</a> for CSE214.</b></li>
+                    <li><b>Make sure you read the warnings about <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">academic dishonesty</a>. <i>Remember, all work you submit for homework or exams MUST be your own work.</i></b></li>
+                    
+                    <li><b><span class="green">You are allowed to use any Java API Data Structure classes such as LinkedList, ArrayList or Vector to implement this assignment.</span></b></li>
+                    <li><b>You may use Scanner, InputStreamReader, or any other class that you wish for keyboard input.</b></li>
+                </ul> 
+                
+            </div> 
+            
+            <hr/>
+        
+            
+            <div>
+                
+                
+                <h2>Assignment</h2>
+                
+                <p>In this assignment, you will be required to write a Java program to add and remove shipping containers for a cargo ship. Cargo ships are massive sea vessels whose main purpose is to move large quantities of cargo from one port to another. Shipping containers are large rectangular metal boxes which hold a specific type of cargo, and are typically stacked on top of one another in order to conserve space. Your program should allow a user to define a cargo ship with a fixed number of cargo stacks and allow them to add (<i>push</i>) containers on the top of an indicated stack of the ship, as well as remove (<i>pop</i>) a container from an indicated stack and place it on another.</p>
+                
+                <p>Simple though this may seem, there is a catch. Although some containers are very sturdy and can support several containers above them, other containers are fragile and cannot support too much weight. To model this in code, each container will be given a <code>CargoStrength</code> value, ranging from <code>FRAGILE</code>, to <code>MODERATE</code>, to <code>STURDY</code>. The rules for these <code>CargoStrength</code> types are described as follows:</p>
+                
+                <ol>
+                    <li><code><b>FRAGLIE</b></code> containers can only support other <code><b>FRAGILE</b></code> containers.</li>
+                    <li><code><b>MODERATE</b></code> containers can support other <code><b>MODERATE</b></code> containers, as well as <code><b>FRAGILE</b></code> containers.</li>
+                    <li><code><b>STURDY</b></code> containers can support all other containers.</li>
+                    <li>The number of containers stacked above any other container does not matter. The only restrictions are the three rules above (<i>Though this is a na&#239;ve assumption, the simplification will make the assignment easier</i>).</li>
+                </ol>
+                
+                <p>Users should be able to create cargo containers and add them, one at a time, to the ship. They may try to place these containers on any of the ship&#39;s stacks; however, your program should prevent them from violating the <code>CargoStrength</code> rules listed above, as well as any other restrictions noted below, such as stack height limit, ship weight limit, etc. (<i>For more info, please refer to the <code>CargoShip</code> class detailed below</i>). The user may also wish to query the ship&#39;s manifest to determine whether a type of cargo exists on the ship, and if so, on which stack(s) and how far down from the top it has been placed (there may be multiple containers holding the same type of cargo). Lastly, the program should print a neatly formatted tabular representation of the ship in it&#39;s current state after each user operation.</p>
+                
+
+                
+                
+                <hr/>
+                
+                
+                <h2>Required Classes</h2>
+    
+                
+                <h2 align="center" style="text-align: center;">
+                    <img src="http://www.cs.stonybrook.edu/~cse214/hw/hw3-images/CargoShip.jpg"/> <br/> <br/>
+                    UML Diagram
+                </h2> 
+    
+            <h3><b>1. <code>CargoStrength</code> Enum</b></h3>
+            
+            <p>Write a simple <code>Enum</code> named <code>CargoStrength</code>, which lists the strength values a cargo container may have. If you are unfamiliar with Java <code>Enum</code> types, you can read about them in this <a rel="noopener" href="https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html">Java tutorial</a>. Java <code>Enums</code> are very similar to Java classes, though they are typically used to encapsulate a set of related constants. In this case, we use it to represent the strength of the cargo, which can be either <code>FRAGILE, MODERATE,</code> or <code>STURDY</code>.</p>
+                                    
+                <p>The rules for the <code>CargoStrength</code> type is described as follows:</p>
+                
+                <ol>
+                    <li><code><b>FRAGLIE</b></code> containers can only support other <code><b>FRAGILE</b></code> containers.</li>
+                    <li><code><b>MODERATE</b></code> containers can support other <code><b>MODERATE</b></code> containers, as well as <code><b>FRAGILE</b></code> containers.</li>
+                    <li><code><b>STURDY</b></code> containers can support all other containers.</li>
+                    <li>The number of containers above any given containers does not matter. The only restrictions are the three rules above (<i>Though this is a naive assumption, the simplification will make the assignment easier</i>).</li>
+                </ol>
+                
+            <h3><b>2. <code>Cargo</code> Class</b></h3>
+            
+                <p>Write a fully documented class named <code>Cargo</code>. This class represents a container which holds the ‘cargo’ the program will place on the ship. It contains the following private member variables: <code><b>name</b></code> (<code>String</code>), <code><b>weight</b></code> (<code>double</code>) and <code><b>strength</b></code> (<code>CargoStrength</code>).</p>
+
+                <p>The Cargo class itself is actually <a rel="noopener" href="https://en.wikipedia.org/wiki/Immutable_object">immutable</a>. This means once it has been constructed, no data within can be changed. From the UML diagram, note that the public constructor takes all the member variables as arguments. Data can still be read via the getter methods.
+                </p>
+                <ul>
+                    <li>
+                        <p><b><code>private String name</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private double weight</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private CargoStrength strength</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>public Cargo(String initName, double initWeight, CargoStrength initStrength)</code></b></p>
+
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Default Constructor.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>initName</code>
+                                        <ul>
+                                            <li>Non-null name for the cargo item.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>initWeight</code>
+                                        <ul>
+                                            <li>The weight for the cargo. The weight should be greater than 0, so an exception should be thrown if <code>initWeight ≤ 0</code> (<i>We do not deal with massless cargo</i>).</li>
+                                        </ul>
+                                        
+                                    </li>
+                                    <li><code>initStrength</code>
+                                        <ul>
+                                            <li>Either <code>FRAGILE, MODERATE, or STURDY</code>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li><code>initName</code> is not <code>null</code>.</li>
+                                    <li><code>initWeight &gt; 0</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>This object has been initialized to a <code>Cargo</code> object with the given <code>name</code>, <code>weight</code>, and <code>strength</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>initName</code> is <code>null</code>.</li>
+                                            <li>If <code>initWeight ≤ 0</code>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b>Getters <span style="color:red;">ONLY</span> for <code>name</code>, <code>weight</code>, <code>strength</code></b></p>
+                    </li>
+                </ul>
+                
+                <h3><b>3. <code>CargoStack</code> class (or <code>java.util.Stack</code>)</b></h3>
+
+                <p>Since <code>Cargo</code> objects can be physically stacked on top of one another, we can store our <code>Cargo</code> objects within a <b>Stack</b> ADT. In this assignment, you can write your own Stack class or you may use the standard <code>Stack</code> class that is in the <code>java.util</code> package. Go to the HELP section and view the online documentation for Stack from the Java API.</p>
+                
+                <p style="font-size:12pt;"><span style="color:red;">CAUTION</span>: Although the Stack class has push and pop methods, the Stack class is a subclass of Vector. Therefore, all of the methods of Vector are also accessible in the Stack class. However, if you use any of the inherited Vector methods in your solution, you will be penalized in this assignment, since some of the Vector methods are not supposed to apply to a Stack ADT in general. (That is, the designers of Java basically define that a Stack is a special type of Vector, but it really isn&#39;t.)</p>
+
+               <h3><b>4. <code>CargoShip</code> class</b></h3>
+               
+               
+               
+                <p>Write a fully documented class named <code>CargoShip</code>. This class represents a container ship which holds stacks of containers. It must contain the following private member variables: <code><b>stacks</b> (CargoStack[])</code>, <code><b>maxHeight</b> (int)</code>, and <code><b>maxWeight</b> (double)</code>. The <code> CargoShip</code> class must also feature the following public methods: <code><b>void pushCargo(Cargo cargo, int stack)</b></code>, <code><b>Cargo popCargo(int stack)</b></code>, and <code><b>void findAndPrint(String name)</b></code>.</p>
+
+                <ul>
+                    <li>
+                        <p><b><code>private CargoStack[] (<i>or <code>java.util.Stack[]</code></i>) stacks</code></b></p>
+                        <ul>
+                            <li>Array of container stacks on the ship. The array should be initialized in the constructor to the size indicated by the parameter <code>numStacks</code>.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>private int maxHeight</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private double maxWeight</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>public CargoShip(int numStacks, initMaxHeight, initMaxWeight)</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Default Constructor.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>numStacks</code>
+                                        <ul>
+                                            <li>The number of stacks this ship can support. This parameter should be used to initialize the <code>stacks</code> array to a fixed size.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>initMaxHeight</code>
+                                        <ul>
+                                            <li>The maximum height of any stack on this ship.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>initMaxWeight</code>
+                                        <ul>
+                                            <li>The maximum weight for all the cargo on the ship.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li><code>numStacks &gt; 0</code>.</li>
+                                    <li><code>initMaxHeight &gt; 0</code>.</li>
+                                    <li><code>initMaxWeight &gt; 0</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>This object has been initialized to a <code>CargoShip</code> object with the indicated number of stacks, <code>maxHeight</code>, and <code>maxWeight</code>.</li>
+                               </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>if either of the parameters are now within the appropriate bounds.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public void pushCargo(Cargo cargo, int stack) throws FullStackException, ShipOverweightException, CargoStrengthException</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Pushes a cargo container to the indicated stack on the cargo ship</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>cargo</code>
+                                        <ul>
+                                            <li>The container to place on the stack.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>stack</code>
+                                        <ul>
+                                            <li>The index of the stack on the ship to push <code>cargo</code> onto.</li>
+                                            <li><span class="warning">Note</span>: you may choose to do your actual indexing starting at 0, but from the user&#39;s perspective, the leftmost stack must be number 1.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li>This <code>CargoShip</code> is initialized and not null.</li>
+                                    <li><code>cargo</code> is initialized and not null.</li>
+                                    <li><code> 1 ≤ stack ≤ stacks.length</code>.</li>
+                                    <li>The size of the stack at the desired index is less than <code>maxHeight</code>.</li>
+                                    <li>The total weight of all <code>Cargo</code> on the ship and <code>cargo.getWeight()</code>is less than <code>maxWeight</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>The <code>cargo</code> has been successfully pushed to the given stack, or the appropriate exception has been thrown, in which case the state of the cargo ship should remain unchanged.</li>
+                               </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>cargo</code> is <code>null</code> or <code>stack</code> is not in the appropriate bounds.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>FullStackException</code>
+                                        <ul>
+                                            <li>If the stack being pushed to is at the max height.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>ShipOverweightException</code>
+                                        <ul>
+                                            <li>If <code>cargo</code> would make the ship exceed <code>maxWeight</code> and sink. <font size="2"> (imaginary bonus points for &quot;yellow submarine&quot; refrences in the exception message).</font></li>
+                                        </ul>
+                                    </li>
+                                    <li><code>CargoStrengthException</code>
+                                        <ul><li>If the cargo would be stacked on top of a weaker cargo (<i>see the <code>CargoStrength</code> rules above for reference</i>).</li></ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public Cargo popCargo(int stack) throws EmptyStackException</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Pops a cargo from one of the specified stack.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>stack</code>
+                                        <ul>
+                                            <li>The index of the stack to remove the cargo from.</li>
+                                            <li><span class="warning">Note:</span> Again, from the user&#39;s perspective, the leftmost stack must be indexed 1.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li>This <code>CargoShip</code> is initialized and not null.</li>
+                                    <li><code> 1 ≤ stack ≤ stacks.length</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>The <code>cargo</code> has been successfully been popped from the stack, and returned, or the appropriate exception has been thrown, in which case the state of the cargo ship should remain unchanged.</li>
+                               </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code> 
+                                        <ul>
+                                            <li>If <code>stack</code> is not in the appropriate bounds.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>EmptyStackException</code> 
+                                        <ul>
+                                            <li>If the stack being popped from is empty.</li> 
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public void findAndPrint(String name)</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Finds and prints a formatted table of all the cargo on the ship with a given name. If the item could not be found in the stacks, notify the user accordingly. (<i>see sample I/O for an example</i>).</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>name</code>:The name of the cargo to find and print.</li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li>This <code>CargoShip</code> is initialized and not null.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>The details of the cargo with the given name have been found and printed, or the user has been notified that no such cargo has been found.</li>
+                                    <li>The state of the cargo ship should remain unchanged.</li>
+                               </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+               
+                <h3><b>5. <code>ShipLoader</code> class</b></h3>
+
+                <p>Write a fully-documented class named <code>ShipLoader</code> which allows a user to create an instance of the <code>CargoShip</code> class, and also provides an interface for a user to manipulate the ship by creating, adding, and moving <code>Cargo</code> objects. In addition to the <code>CargoShip</code>, the <code>ShipLoader</code> utilizes another <code>CargoStack</code> called <code>dock</code>, which is the loading/unloading stack for <code>Cargo</code> being moved to/from the ship. The following functionality should be provided:</p>
+                
+                <ul>
+                    <li>
+                        <p><b><code>public static void main(String[] args)</code></b></p>
+                        <ul>
+                            <li><i>Brief:</i><br/>
+                                <ul>
+                                    <li>The main method runs a menu driven application which allows the user to create an instance of the <code>CargoShip</code> class and then prompts the user for a menu command selecting the operation. The required information is then requested from the user based on the selected operation. Following is the list of menu options and their required information:</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <p>A sample menu is provided below indicating the functionality your <code>ShipLoader</code> program should support:</p>
+                
+                <pre>
+    C) Create new cargo <b>&lt;name&gt; &lt;weight&gt; &lt;strength&gt;</b>
+    L) Load cargo from dock <b>&lt;stackIndex&gt;</b>
+    U) Unload cargo from ship <b>&lt;srcStackIndex&gt;</b>
+    M) Move cargo between stacks <b>&lt;srcStackIndex&gt; &lt;dstStackIndex&gt;</b>
+    K) Clear dock
+    P) Print ship stacks
+    S) Search for cargo <b>&lt;name&gt;</b>
+    Q) Quit
+                </pre>
+                <p>A few notes for the above operations:</p>
+                
+                <ul>
+                    <li>When cargo is created, it is initially placed on the <code>dock</code> to be moved to the ship. Note that this <code>dock</code> is just another instance of the <code>CargoStack</code> and is thus subject to the same <code>CargoStrength</code> rules listed above (<i>i.e. a <code>STURDY Cargo</code> cannot be created if a <code>FRAGILE Cargo</code> is currently at the top of the <code>dock</code> stack</i>). However, the <code>dock</code> is not limited to the <code>maxHeight</code> limitation of the <code>CargoShip</code>. The <code>dock</code> can stack as many items as necessary, as long as the <code>CargoStrength</code> rules are not violated. Please see the sample I/O for an example.</li>
+                    <li>Any time cargo is created or moved between stacks, the program should automatically print the ship stacks immediately after performing the reqested operation.</li>
+                    <li>For option <code>S)</code>, the program should only search the stacks on the ship (<i>the dock should not be included in the search</i>).</li>
+                </ul>
+                
+                <h3><b>6. <code>Exception</code> classes</b></h3>
+               
+                <p>You should create whatever relevant exception classes are required to express invalid operations performed by the user. Below are a list of the <code>Exception</code> classes which you should use for the assignment:</p>
+               
+                <ol>
+                   <li><code><b>FullStackException</b></code>
+                       <ul>
+                           <li>Should be thrown if the user attempts to push a <code>Cargo</code> object onto a stack which is currently at the maximum height.</li>
+                       </ul>
+                   </li>
+                   <li><code><b>EmptyStackException</b></code>
+                       <ul>
+                           <li>Should be thrown if the user attempts to pop a <code>CargoStack</code> that currently has no <code>Cargo</code> items on it.</li>
+                       </ul>
+                   </li>
+                   <li><code><b>ShipOverweightException</b></code>
+                       <ul>
+                           <li>Should be thrown if the user attempts to push a <code>Cargo</code> object on to any stack of the <code>CargoShip</code> which would put it over it&#39;s maximum weight limit.</li>
+                       </ul>
+                   </li>
+                   <li><code><b>CargoStrengthException</b></code>
+                       <ul>
+                           <li>Should be thrown if the user attempts to push a <code>Cargo</code> object onto another <code>Cargo</code> object that violates the <code>CargoStrength</code> rules indicated above.</li>
+                       </ul>
+                   </li>
+                </ol>
+                
+                <p><span class="warning">Note:</span> You should make sure that you catch <b>ALL</b> exceptions that you throw anywhere in your code. Exceptions are used to indicate illegal or unsupported operations so that your program can handle unexpected events gracefully and prevent a crash. Your program should <b>NOT</b> crash from any of the above exceptions (<i>it should not crash from any exception, but especially not one that you throw yourself</i>).</p>
+                
+            </div> 
+            
+            <hr/>
+            
+            <h2>Extra Credit:</h2>
+            
+            <p>For extra credit, you can implement an optional menu function, <b><code>R) Remove &lt;name&gt; </code></b>. This operation will begin by clearing whatever <code>cargo</code> is currently on the dock, and then proceed to automatically remove all <code>cargo</code> instances with the indicated name from the cargo ship. You may only use the stacks of the ship and the dock to maneuver <code>cargo</code> around, and you must also detail the movement of each <code>cargo</code> object (<i>i.e. display the state of the ship and the dock after each movement during the operation</i>). After the operation completes, all instances of <code>cargo</code> with the indicated name should be removed from the ship and stacked on the dock (<i>these cargo items should be the ONLY cargo on the dock</i>). Note that the resulting configuration of the cargo ship does not matter, so long as no rules are violated and the desired cargo is on the dock.</p>
+            
+            <p>For this operation, you can make the following assumptions:</p>
+                <ol>
+                    <li>The ship will have 3 stacks and a max height of 3, for a potential maximum of 9 <code>cargo</code> objects on the ship.</li>
+                    <li>All instances of the <code>cargo</code> with the indicated name will have the same <code>CargoStrength</code> (<i>i.e. they can all be stacked on top of one another</i>).</li>
+                </ol>
+            
+            <hr/>
+            
+            <h2>Input Format:</h2>
+            
+            <p>Each menu operation is entered on its own line and should be case insensitive (i.e. q and Q are the same). If the user selects either <code>C)</code> to create a new <code>Cargo</code> object, the user should be prompted to construct a new <code>Cargo</code> before placing it on the <code>dock</code> (see sample I/O for examples).</p>
+            <hr/>
+            
+            <h2>Output Format:</h2>
+            
+            <p>All lists must be printed in a nice and tabular form as shown in the sample output. You may use C style formatting as shown in the following example. The example below shows two different ways of displaying the name and address at pre-specified positions 21, 26, 19, and 6 spaces wide. If the ‘-’ flag is given, then it will be left-justified (padding will be on the right), else the region is right-justified. The ‘s’ identifier is for strings, the ‘d’ identifier is for integers. Giving the additional ‘0’ flag pads an integer with additional zeroes in front.</p>
+            
+            <pre>
+    String name = &quot;Doe Jane&quot;;
+    String address = &quot;32 Bayview Dr.&quot;;
+    String city = &quot;Fishers Island, NY&quot;;
+    int zip = 6390;
+    
+    System.out.println(String.format(&quot;%-21s%-26s%19s%06d&quot;, name, address, city, zip));
+    System.out.printf(&quot;%-21s%-26s%19s%06d&quot;, name, address, city, zip);
+
+<span class="comment">   // Output</span>
+    Doe Jane             32 Bayview Dr.             Fishers Island, NY 06390
+    Doe Jane             32 Bayview Dr.             Fishers Island, NY 06390
+            </pre>
+            
+            <hr/>
+            
+            <h2>Sample Input/Output:</h2>
+            <pre><span class="code"> <span class="comment">// Comment in green</span>, <span class="input">input in red</span>, output in black
+
+  Welcome to ShipLoader!
+  
+  <span class="comment">// Build ship first.</span>
+  Cargo Ship Parameters
+  --------------------------------------------------
+  Number of stacks: <span class="input">3</span>
+  Maximum height of stacks: <span class="input">3</span>
+  Maximum total cargo weight: <span class="input">5500</span>
+  
+  Cargo ship created.
+  Pulling ship in to dock...
+  Cargo ship ready to be loaded.
+  
+  <span class="comment">// menu</span>
+  Please select an option:
+  C) Create new cargo
+  L) Load cargo from dock
+  U) Unload cargo from ship
+  M) Move cargo between stacks
+  K) Clear dock
+  P) Print ship stacks
+  S) Search for cargo
+  Q) Quit
+  
+  Select a menu option: <span class="input">C</span>    
+  
+  Enter the name of the cargo: <span class="input">bananas</span>
+  Enter the weight of the cargo: <span class="input">800</span>
+  Enter the container strength (F/M/S): <span class="input">F</span>
+  
+  Cargo &#39;bananas&#39; pushed onto the dock.
+  
+  Stack 1:
+  Stack 2:
+  Stack 3:
+  Dock: F
+
+  Total Weight = 0 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">C</span>  
+  
+  Enter the name of the cargo: <span class="input">aluminum</span>
+  Enter the weight of the cargo: <span class="input">2000</span>
+  Enter the container strength (F/M/S): <span class="input">S</span>
+  
+  Operation failed! Cargo at top of stack cannot support weight. <span class="comment">// fails, since FRAGILE</span>
+                                                                 <span class="comment">// cannot support STURDY.</span>
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">L</span>  
+  
+  Select the load destination stack index: <span class="input">1</span>
+  
+  Cargo &#39;bananas&#39; moved from dock to stack 1.
+   
+  Stack 1: F
+  Stack 2:
+  Stack 3:
+  Dock: 
+
+  Total Weight = 800 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">C</span>  
+  
+  Enter the name of the cargo: <span class="input">aluminum</span>
+  Enter the weight of the cargo: <span class="input">2000</span>
+  Enter the container strength (F/M/S): <span class="input">S</span>
+  
+  Cargo &#39;aluminum&#39; pushed onto the dock.
+  
+  Stack 1: F
+  Stack 2:
+  Stack 3:
+  Dock: S
+
+  Total Weight = 800 / 5500
+  
+
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">C</span>  
+  
+  Enter the name of the cargo: <span class="input">potatoes</span>
+  Enter the weight of the cargo: <span class="input">1200</span>
+  Enter the container strength (F/M/S): <span class="input">M</span>
+
+  Cargo &#39;potatoes&#39; pushed onto the dock. <span class="comment">// okay, since STURDY supports MODERATE.</span>
+  
+
+  Stack 1: F
+  Stack 2:
+  Stack 3:
+  Dock: S, M
+
+  Total Weight = 800 / 5500
+
+
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">L</span>  
+  
+  Select the load destination stack index: <span class="input">1</span>
+  
+  Operation failed! Cargo at top of stack cannot support weight. <span class="comment">// fails, since FRAGILE</span>
+                                                                 <span class="comment">// cannot support MODERATE.</span>
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">L</span>  
+  
+  Select the load destination stack index: <span class="input">3</span>
+  
+  Cargo &#39;potatoes&#39; moved from dock to stack 3.
+   
+  Stack 1: F
+  Stack 2:
+  Stack 3: M
+  Dock: S
+  
+  Total Weight = 2000 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">L</span>  
+  
+  Select the load destination stack index: <span class="input">2</span>
+  
+  Cargo &#39;aluminum&#39; moved from dock to stack 2.
+   
+  Stack 1: F
+  Stack 2: S
+  Stack 3: M
+  Dock: 
+
+  Total Weight = 4000 / 5500
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">M</span>  
+  
+  Source stack index: <span class="input">3</span>
+  Destination stack index: <span class="input">2</span>
+  
+  Cargo moved from stack 3 to stack 2. <span class="comment">// okay, since STURDY supports MODERATE.</span>
+   
+ 
+  Stack 1: F
+  Stack 2: S, M
+  Stack 3:
+  Dock: 
+
+  Total Weight = 4000 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">M</span>  
+  
+  Source stack index: <span class="input">1</span>
+  Destination stack index: <span class="input">2</span>
+  
+  Cargo moved from stack 3 to stack 2. <span class="comment">// okay, since MODERATE supports FRAGILE.</span>
+  
+  Stack 1:
+  Stack 2: S, M, F
+  Stack 3:
+  Dock: 
+
+  Total Weight = 4000 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">C</span>  
+  
+  Enter the name of the cargo: <span class="input">rubber ducks</span>
+  Enter the weight of the cargo: <span class="input">450</span>
+  Enter the container strength (F/M/S): <span class="input">F</span>
+  
+  Cargo &#39;rubber ducks&#39; pushed onto the dock.
+  
+  Stack 1:
+  Stack 2: S, M, F
+  Stack 3:
+  Dock: F
+
+  Total Weight = 4000 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">L</span>  
+  
+  Select the load destination stack index: <span class="input">2</span>
+  
+  Operation failed! Cargo stack is at maximum height. <span class="comment">// fails, since stack</span>
+                                                      <span class="comment">// is at max height (3).</span>
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">K</span>  
+  
+  Dock cleared.
+  
+  Stack 1:
+  Stack 2: S, M, F
+  Stack 3:
+  Dock: 
+
+  Total Weight = 4000 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">C</span>  
+  
+  Enter the name of the cargo: <span class="input">aluminum</span>
+  Enter the weight of the cargo: <span class="input">1100</span>
+  Enter the container strength (F/M/S): <span class="input">S</span>
+  
+  Cargo &#39;aluminum&#39; pushed onto the dock.
+  
+  Stack 1:
+  Stack 2: S, M, F
+  Stack 3:
+  Dock: S
+  
+  Total Weight = 4000 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">L</span>  
+
+  Select the load destination stack index: <span class="input">3</span>
+  
+  Cargo &#39;aluminum&#39; moved from dock to stack 3. 
+ 
+  Stack 1:
+  Stack 2: S, M, F
+  Stack 3: S
+  Dock: 
+
+  Total Weight = 5100 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">C</span>  
+  
+  Enter the name of the cargo: <span class="input">rubber ducks</span>
+  Enter the weight of the cargo: <span class="input">450</span>
+  Enter the container strength (F/M/S): <span class="input">F</span>
+  
+  Cargo &#39;rubber ducks&#39; pushed onto the dock.
+  
+  Stack 1:
+  Stack 2: S, M, F
+  Stack 3: S
+  Dock: F
+
+  Total Weight = 5100 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">L</span>  
+
+  Select the load destination stack index: <span class="input">3</span>
+  
+  Operation failed! Cargo would put ship overweight. <span class="comment">// fails, since cargo puts</span>
+                                                     <span class="comment">// ship over max weight (5500).</span>
+                                                     <span class="comment">// Rubber ducks can&#39;t catch a break.</span>
+
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">S</span>  
+  
+  Enter the name of the cargo: <span class="input">aluminum</span>
+  
+  Cargo &#39;aluminum&#39; found at the following locations: 
+  
+  
+   Stack   Depth   Weight   Strength
+  =======+=======+========+========== 
+     2   |   2   |  2000  |  STURDY   <span class="comment">// Two below top of stack.</span>
+     3   |   0   |  1100  |  STURDY   <span class="comment">// At top of stack.</span>
+     
+  Total Count:  2
+  Total Weight: 3100
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">U</span>  
+  
+  Select the unload source stack index: <span class="input">2</span>
+  
+  Cargo moved from stack 2 to dock. <span class="comment">// okay, since FRAGILE supports FRAGILE.</span>
+   
+  Stack 1:
+  Stack 2: S, M
+  Stack 3: S
+  Dock: F, F 
+
+  Total Weight = 4300 / 5500
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">K</span>  
+  
+  Dock cleared.
+  
+  Stack 1:
+  Stack 2: S, M
+  Stack 3: S
+  Dock: 
+  
+  Total Weight = 4300 / 5500
+  
+  
+    
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">S</span>  
+  
+  Enter the name of the cargo: <span class="input">bananas</span>
+  
+  Cargo &#39;bananas&#39; could not be found on the ship.
+  
+  
+  
+  <span class="comment">// OPTIONAL, EXTRA CREDIT. </span>
+  
+  
+  
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">R</span>  
+  
+  What item would you like to remove? <span class="input">aluminum</span>
+  
+  Dock cleared.
+  Removing cargo &#39;aluminum&#39;.
+  
+  Step 1: Moved cargo from stack 3 to dock.
+  
+  Stack 1:
+  Stack 2: S, M
+  Stack 3:
+  Dock: S
+  
+  Total Weight = 3200 / 5500
+
+
+  Step 2: Moved cargo from stack 2 to stack 1.
+             
+  Stack 1: M
+  Stack 2: S
+  Stack 3:
+  Dock: S
+
+  Total Weight = 3200 / 5500
+
+
+  Step 3: Moved cargo from stack 2 to dock.
+              
+  Stack 1: M
+  Stack 2:
+  Stack 3:
+  Dock: S, S
+  
+  Total Weight = 1200 / 5500
+
+
+  Cargo &#39;aluminum&#39; removed from the ship.
+  Steps taken: 3
+  
+
+  <span class="comment">// menu not shown in the sample input/output</span>
+  Select a menu option: <span class="input">Q</span>
+  
+  Program terminating normally...
+</span></pre></div>
+        <hr size="2" width="100%" align="center"/>
+        <p align="center" style="text-align:center;"><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:maroon;"><a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">Course Info</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/schedule.htm" target="_blank">Schedule</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/sections.htm" target="_blank">Sections</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">Announcients</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/homework.htm" target="_blank">Homework</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/exams.htm" target="_blank">Exams</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/help.htm" target="_blank">Help/FAQ</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/grades.htm" target="_blank">Grades</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">HOME</a></span></b><b> </b></p>
+
+
+
+<script type="module" src="https://s.brightspace.com/lib/bsi/20.23.2-175/unbundled/mathjax.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					if (document.querySelector('math') || /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(document.body.innerHTML)) {
+						document.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+							elm.setAttribute('style', 'display: block; height: 0.5rem;');
+						});
+
+						window.D2L.MathJax.loadMathJax({
+							'outputScale': 1.3,
+							'renderLatex': true
+						});
+					}
+				});</script><script type="module" src="https://s.brightspace.com/lib/bsi/20.23.2-175/unbundled/prism.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					document.querySelectorAll('.d2l-code').forEach(code => {
+						window.D2L.Prism.formatCodeElement(code);
+					});
+				});</script></body></html>

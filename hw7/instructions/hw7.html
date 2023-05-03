@@ -1,0 +1,807 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body>
+
+
+
+    
+        
+        
+        
+
+
+
+
+
+
+    
+    <div lang="EN-US">
+        
+            
+            <div>
+                
+                
+                <h2 align="center" style="text-align:center;">
+                    <img width="244" height="121" src="http://www.cs.stonybrook.edu/~cse214/images/logo.gif" alt=""/><br/><br/>
+                    <span class="hw-header">HOMEWORK 7 - Spring 2023</span>
+                </h2>  
+                
+                <hr/>
+                
+                <h3><b>HOMEWORK 7 - due Tuesday, May 2nd no later than 7:00PM</b></h3>
+                
+                
+                <p><b>Reminders:</b></p>
+                <ul type="disc">
+				   <li><b><span style="color:red;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+   Submit your files only via CodeGrade in the Content page on Brightspace. Access CodeGrade by clicking <a rel="noopener" href="https://mycourses.stonybrook.edu/d2l/le/content/358338/Home">&quot;HW7 - CODEGRADE SUBMISSION LINK&quot;</a> for your submission.</span></b><span></span></li>
+
+				<li><b><span style="color:red;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+   Use of a package is optional. If you wish to use it, make sure to name it &quot;hw7&quot; (all in lower case). Otherwise, you will lose points.</span></b><span></span></li>
+
+                    <li><b>Be sure your code follows the <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/codingstyle.htm" target="_blank">coding style</a> for CSE214.</b></li>
+                    <li><b>Make sure you read the warnings about <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">academic dishonesty</a>. <i>Remember, all work you submit for homework or exams MUST be your own work.</i></b></li>
+                    
+                    <li><b><span class="green">You are allowed to use any Java API Data Structure classes such as LinkedList, ArrayList or Vector to implement this assignment.</span></b></li>
+                    <li><b>You may use Scanner, InputStreamReader, or any other class that you wish for keyboard input.</b></li>
+                </ul> 
+                
+            </div> 
+            
+            <hr/>
+        
+            
+            <div>
+                
+                
+                <h2>Assignment</h2>
+                
+                <p>In this assignment, you will create an application which views and sorts a database of Near Earth Objects (i.e. asteroids) that are provided live via a <a rel="noopener" href="https://open.nasa.gov/blog/nasa-apis/">public NASA API</a>. To make the assignment simpler, you will be able to use a special <a rel="noopener" href="https://github.com/berry-cs/big-data-cse"><code>BigData</code> library</a> to parse the text file returned by the API directly into Java objects.</p>
+                
+                <p>The data structure used for this assignment is up to you - <span class="green"><b>you may use any data structure you think is best to implement the database</b></span>. Before settling on a data structure, however, be sure to consider how the database will be used, and which data structures we&#39;ve studied are best suited for these purposes. </p>
+
+                <p>This assignment is unlike others you&#39;ve worked on so far - the data you will be retrieving is coming from a live web server via a <a rel="noopener" href="https://en.wikipedia.org/wiki/Representational_state_transfer">REST API</a>. REST, or REpresentational State Transfer, is a simple yet popular system for exchanging data over a network (<i>many real-time applications use RESTful services to retrieve the most up-to-date data</i>). A RESTful service provides data to clients using simple HTTP requests which return data files instead of HTML documents, typically in the form of JSON or XML.</p>
+                
+                <p><span class="green"><b>Note:</b></span> Although this assignment requires you make web requests and parse text data, nearly all of this work is done by the <code>BigData</code> library. Be sure to read the entire specification before beginning the assignment, as there are certain steps you can do which will greatly reduce the work required for this assignment.</p>
+
+                
+                
+                <hr/>
+                
+                
+                <h2>Required Classes</h2>
+    
+                <p>The instructions detailed in this specifcation should be considered more as a guidelines than as fixed rules. Please feel free to add additional classes, methods, member variables as you see fit. As long as the requirements are satisfied, i.e. all operations in the grading key are supported, you may be as flexible as you like when implementing the assignment. Please keep in mind that standard OOP practices should still be followed, and points will be deducted for poor software design (<i>e.g. using <code>public</code> instance variables</i>).</p><br/>
+    
+                
+                <h2 align="center" style="text-align: center;">
+                    <img src="http://www3.cs.stonybrook.edu/~cse214/hw/hw7-images/hw7-image-sp21.jpg" alt=""/> <br/> <br/>
+                    UML Diagram
+                </h2> 
+
+            <h3><b>1. <code>NearEarthObject</code> Class</b></h3>
+            
+                <p>Write a fully documented class named <code>NearEarthObject</code>. This class represents a record in the database of asteroids currently tracked by NASA. It should be noted that this class will <b>always</b> be constructed by the <code>BigData</code> library, and serves as a data container for the information that is already hosted by the NeoW API. Please refer to the <code><b>BigData</b></code> section below for more information on how the library will use this constructor to extract <code>NearEarthObjects</code> out of the JSON document returned by the NASA NeoW API.</p>
+                <ul>
+                    <li>
+                        <p><b><code>private int referenceID</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private String name</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private double absoluteMagnitude</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private double averageDiameter</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private boolean isDangerous</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private Date closestApproachDate</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private double missDistance</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>private <span class="warning">String</span> orbitingBody</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>public NearEarthObject(int referenceID, String name, double absoluteMagnitude, double minDiameter, double maxDiameter, boolean isDangerous, long closestDateTimestamp, double missDistance, String orbitingBody)</code></b></p>
+                        
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Default Constructor.</li>
+                                    <li><span class="warning">Note:</span> It is very important that your constructor exactly match this signature. This constructor will be used by the BigData library to fetch the <code>NearEarthObject</code> records from the NeoW API.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>referenceID</code>
+                                        <ul>
+                                            <li>Unique the ID of the NEO.</li>
+                                            <li>Fetched using the <span class="green"><code>&quot;near_earth_objects/neo_reference_id&quot;</code></span> identifier.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>name</code>
+                                        <ul>
+                                            <li>Unique name of the asteroid or orbital body.</li>
+                                            <li>Fetched using the <span class="green"><code>&quot;near_earth_objects/name&quot;</code></span> identifier.</li>
+                                        </ul>
+                                        
+                                    </li>
+                                    <li><code>absoluteMagnitude</code>
+                                        <ul>
+                                            <li>Absolute brightness of the asteroid or orbital body in the sky.</li>
+                                            <li>Fetched using the <span class="green"><code>&quot;near_earth_objects/absolute_magnitude_h&quot;</code></span> identifier.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>minDiameter</code>
+                                        <ul>
+                                            <li>Estimated minimum diameter of the asteroid or orbital body in kilometers. This parameter should be used in conjunction with the <code>maxDiameter</code> parameter to calculate and initialize the <code>averageDiameter</code> member variable.</li>
+                                            <li>Fetched using the <span class="green"><code>&quot;near_earth_objects/estimated_diameter/kilometers/estimated_diameter_min&quot;</code></span> identifier.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>maxDiameter</code>
+                                        <ul>
+                                            <li>Estimated maximum diameter of the asteroid or orbital body in kilometers. This parameter should be used in conjunction with the <code>minDiameter</code> parameter to calculate and initialize the <code>averageDiameter</code> member variable.</li>
+                                            <li>Fetched using the <span class="green"><code>&quot;near_earth_objects/estimated_diameter/kilometers/estimated_diameter_max&quot;</code></span> identifier.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>isDangerous</code>
+                                        <ul>
+                                            <li>Boolean value indicating whether the astroid or orbital body is a potential impact threat.</li>
+                                            <li>Fetched using the <span class="green"><code>&quot;near_earth_objects/is_potentially_hazardous_asteroid&quot;</code></span> identifier.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>closestDateTimestamp</code>
+                                        <ul>
+                                            <li>Unix timestamp representing the date of closest approach. Note that this can be used to directly construct the <code>closestApproachDate</code> member variable, as the <code>Date</code> class provides a constructor taking a timestamp as a parameter.</li>
+                                            <li>Fetched using the <span class="green"><code>&quot;near_earth_objects/close_approach_data/epoch_date_close_approach&quot;</code></span> identifier.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>missDistance</code>
+                                        <ul>
+                                            <li>Distance in kilometers at which the asteroid or orbital body will pass by the Earth on the date of it&#39;s closest approach.</li>
+                                            <li>Fetched using the <span class="green"><code>&quot;near_earth_objects/close_approach_data/miss_distance/kilometers&quot;</code></span> identifier.</li>
+                                        </ul>
+                                    </li>
+                                    <li><code>orbitingBody</code>
+                                        <ul>
+                                            <li>Planet or other orbital body which this NEO orbits.</li>
+                                            <li>Fetched using the <span class="green"><code>&quot;near_earth_objects/close_approach_data/orbiting_body&quot;</code></span> identifier.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b>Getters and setters for all member variables.</b></p>
+                    </li>
+                </ul>
+                
+                <h3><b>2. <code>Comparator</code> classes</b></h3>
+
+                <p>The assignment requires <code>NearEarthObject</code> instances to be sorted by <b>four</b> different member variables: <code>referenceID</code>, <code>averageDiameter</code>, <code>closestApproachDate</code>, and <code>missDistance</code>. To accomplish this, you should create four different classes which implment the <code>Comparator</code> interface which allow the <code>NearEarthObjects</code> to be arranged in sorted order based on the value of these member variables.</p>
+                
+                <ol>
+                    <li>
+                        <p><b><code>ReferenceIDComparator implements java.util.Comparator&lt;NearEarthObject&gt;</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>DiameterComparator implements java.util.Comparator&lt;NearEarthObject&gt;</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>ApproachDateComparator implements java.util.Comparator&lt;NearEarthObject&gt;</code></b></p>
+                    </li>
+                    <li>
+                        <p><b><code>MissDistanceComparator implements java.util.Comparator&lt;NearEarthObject&gt;</code></b></p>
+                    </li>
+                </ol>
+                
+                <p>Each of these classes should implement a <code><b>int compare(NearEarthObject left, NearEarthObject right)</b></code> method. Each method in these classes should compare the two arguments based on the value of the desired member variable. For example, <code>ReferenceIDComparator</code> would compare two <code>NearEarthObjects</code> based on the values of their <code>referenceID</code> member variables, <code>DiameterComparator</code> would compare them based on the values of their <code>averageDiameter</code> member variables, etc. For more information, please refer to the documentation on the <a rel="noopener" href="https://docs.oracle.com/javase/7/docs/api/java/util/Comparator.html"><code>Comparator</code> interface</a> provided by Oracle.</p>
+
+                <h4>Comparable/Comparator Example:</h4>
+
+                <pre>
+<span style="color: #00B050;">   /*
+    * An example of type abstraction that implements Comparable
+    * and Comparator interfaces.
+    *
+    * The Comparable/Comparator interfaces provide a standard means
+    * for communication with yet unknown types of objects.
+    */</span>
+
+    public class CollectionsTester {
+        public static void main(String[] args) {
+            ArrayList&lt;Employee&gt; staff = new ArrayList&lt;Employee&gt;();
+
+            staff.add(new Employee(&quot;Joe&quot;,100000, 177700010));
+            staff.add(new Employee(&quot;Jane&quot;,200000, 111100010));
+            staff.add(new Employee(&quot;Bob&quot;,66666, 1999000010));
+            staff.add(new Employee(&quot;Andy&quot;,77777, 188800010));
+
+            Collections.sort(staff);                                      <span style="color: #00B050;">// Sort by salary</span>
+            System.out.println(&quot;Lowest paid employee: &quot;+staff.get(0));    <span style="color: #00B050;">// Prints Bob</span>
+
+            Collections.sort(staff, new NameComparator());                <span style="color: #00B050;">// Sort by alphabetical order</span>
+            System.out.println(&quot;First employee in list: &quot;+staff.get(0));  <span style="color: #00B050;">// Prints Andy</span>
+
+            Collections.sort(staff, new IdComparator());                  <span style="color: #00B050;">// Sort by ID number</span>
+            System.out.println(&quot;Employee with lowest ID: &quot;+staff.get(0)); <span style="color: #00B050;">// Prints Jane</span>
+        }
+    }
+
+    public class Employee implements Comparable {
+        private String name;
+        private int salary;
+        private int id;
+        public Employee(String initName, int initSal, int initId) {
+            id     = initId;
+            name = initName;
+            salary = initSal;
+        }
+        public String getName(){ return name; }
+        public int getSalary() { return salary; }
+        public int getId(){ return id; }
+        public void setSalary(int newSalary) {
+            salary = newSalary;
+        }
+        public int compareTo(Object o) {
+            Employee otherEmp = (Employee)o;
+            if (this.salary == otherEmp.salary)
+                return 0;
+            else if (this.salary &gt; otherEmp.salary)
+                return 1;
+            else
+                return -1;
+        }
+        public String toString() {
+            return name + &quot;, $&quot; + salary + &quot;, &quot;+ id;
+        }
+    }
+
+    public class NameComparator implements Comparator {
+        public int compare(Object o1, Object o2) {
+            Employee e1 = (Employee) o1;
+            Employee e2 = (Employee) o2;
+            return (e1.getName().compareTo(e2.getName()));
+        }
+    }
+
+    public class IdComparator implements Comparator {
+        public int compare(Object o1, Object o2) {
+            Employee e1 = (Employee) o1;
+            Employee e2 = (Employee) o2;
+            if (e1.getId() == e2.getId())
+                return 0;
+            else if (e1.getId() &gt; e2.getId())
+                return 1;
+            else
+                return -1;
+        }
+    }
+                </pre>
+
+
+               <h3><b>3. <code>NeoDatabase</code> class</b></h3>
+               
+               
+                <p>Write a fully documented class named <code>NeoDatabase</code> which will contain and manage the <code>NearEarthObject</code> records which have been downloaded from the online dataset. The specific data structure used to implment this database is up to you - any Java API class may be used or customized for this purpose. While deciding which structure to use, be sure to consider the operations which will be performed on this database, as well as the pros and cons for using various structures such as <code>LinkedLists</code>, <code>Trees</code>, <code>Hashtables</code>, and the like (<i>keep in mind that <code>Collections.sort()</code> can only operate on a class which implements the <code>List</code> interface</i>).</p>
+                <ul>
+                    <li>
+                        <p><b><code>public static final String API_KEY = <span style="color: #00B050;">/* Unique Key here. */</span></code></b></p>
+                        <ul>
+                            <li>API Key specific to this application used to perform queries to the NASA NeoW API. You must register for one <a rel="noopener" href="https://api.nasa.gov/index.html#apply-for-an-api-key">at this page</a> in order to make queries to the dataset.</li>
+                            <li><span class="warning">Warning:</span> The API limits requests to 1,000 per hour per unique API_KEY. Though it is unlikely that you should ever reach this request number, it should be noted that there is a limit to how many requests you may make.</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public static final String API_ROOT = &quot;https://api.nasa.gov/neo/rest/v1/neo/browse?&quot;</code></b></p>
+                        <ul>
+                            <li>URL of the REST API used to conduct queries. The query parameters will be appended to the end of this string, which will indicate the page number requested by the user along with the program&#39;s uniqe <code>API_KEY</code> described above (<i>see <code>buildQueryURL()</code> below for further information</i>).</li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public NeoDatabase()</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Default Constructor.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>The database has been constructed and is empty.</li>
+                               </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public String buildQueryURL(int pageNumber) throws IllegalArgumentException</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Builds a query URL given a page number. This should be a simple method which returns <code>(<span class="green">API_ROOT</span> + &quot;page=&quot; + <span class="green">pageNumber</span> + &quot;&amp;api_key=&quot; + <span class="green">API_KEY</span>)</code></li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>pageNumber</code>
+                                        <ul>
+                                            <li>Integer ranging from 0 to 715 indicating the page the user wishes to load.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li><code>0 ≤ page ≤ 715</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>pageNumber</code> is not in the valid range.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public void addAll(String queryURL) throws IllegalArgumentException</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Opens a connection to the data source indicated by <code>queryURL</code> and adds all <code>NearEarthObjects</code> found in the dataset.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>queryURL</code>
+                                        <ul>
+                                            <li>String containing the URL requesting a dataset from the NASA NeoW service (<i>should be generated by <code>buildQueryURL()</code> above</i>).</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li><code>queryURL</code> is a non-null string representing a valid API request to the NASA NeoW service.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>All <code>NearEarthObject</code> records returned have been added to the database, or else a <code>IllegalArgumentException</code> has been thrown.</li>
+                               </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code>
+                                        <ul>
+                                            <li>If <code>queryURL</code> is <code>null</code> or cound not be resolved by the server.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public void sort(Comparator&lt;NearEarthObject&gt; comp) throws IllegalArgumentException</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Sorts the database using the specified <code>Comparator</code> of <code>NearEarthObjects</code>.</li>
+                                </ul>
+                            </li>
+                            <li><em>Parameters:</em><br/>
+                                <ul>
+                                    <li><code>comp</code>
+                                        <ul>
+                                            <li><code>Comparator</code> of <code>NearEarthObjects</code> which will be used to sort the database. This parameter can be any of the required <code>Comparator</code> classes listed above.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li><code>comp</code> is not null.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>The database has been sorted based on the order specified by the inidcated <code>Comparator</code> of <code>NearEarthObjects</code>.</li>
+                               </ul>
+                            </li>
+                            <li><em>Throws:</em><br/>
+                                <ul>
+                                    <li><code>IllegalArgumentException</code> 
+                                        <ul>
+                                            <li>If <code>comp</code> is <code>null</code>.</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><em><span class="green">Note:</span></em><br/>
+                                <ul>
+                                    <li>This method can utilize the <code>Arrays.sort(T[] array, Comparator&lt;T&gt; comp)</code> or <code>Collections.sort(List&lt;T&gt; array, Comparator&lt;T&gt; comp)</code> functions to sort the database (<i>note that these functions only take an array of objects and a <code>List</code> of objects, repectively</i>).</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <p><b><code>public void printTable()</code></b></p>
+                        <ul>
+                            <li><em>Brief:</em><br/>
+                                <ul>
+                                    <li>Displays the database in a neat, tabular form, listing all member variables for each <code>NearEarthObject</code>. Note the table should be printed in the order specified by the last <b>sort()</b> call.</li>
+                                </ul>
+                            </li>
+                            <li><em>Preconditions:</em><br/>
+                                <ul>
+                                    <li>This <code>NeoDatabase</code> is initialized and not null.</li>
+                                </ul>
+                            </li>
+                            <li><em>Postconditions:</em><br/>
+                                <ul>
+                                    <li>The table has been printed to the console but remains unchanged.</li>
+                               </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+               
+                <h3><b>4. <code>NeoViewer</code> class</b></h3>
+
+                <p>Write a fully-documented class named <code>NeoViewer</code> which allows a user to view datasets obtained from the NASA NeoW API. This class should contain a <code>main()</code> method which creates a database and prompts the user to add a page to the database, sort the current database, and display the database.</p>
+                
+                <ul>
+                    <li>
+                        <p><b><code>public static void main(String[] args)</code></b></p>
+                        <ul>
+                            <li><i>Brief:</i><br/>
+                                <ul>
+                                    <li>The main method runs a menu driven application which creates a <code>NeoDatabase</code> instance and then prompts the user for a menu command selecting the operation. The required information is then requested from the user based on the selected operation. Following is the list of menu options and their required information:</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <p>A sample menu is provided below indicating the functionality your <code>NeoViewer</code> program should support:</p>
+                
+                <pre>
+    A) Add a page to the database <b>&lt;page&gt;</b>
+    S) Sort the database 
+    <span style="color: #00B050;">// Sub-menu</span>
+        R) Sort by referenceID
+        D) Sort by diameter
+        A) Sort by approach date
+        M) Sort by miss distance
+    P) Print the database as a table.
+    Q) Quit
+                </pre>
+                <p>A few notes for the above operations:</p>
+                
+                <ul>
+                    <li>When the user wishes to add a page to the database, <code>&lt;page&gt;</code> parameter should be used to construct a query string to be used to construct a <code>DataSource</code>.</li>
+                    <li>The sort operation should display the indicated sub-menu for selecting which variable to sort on.</li>
+                </ul>
+                
+            </div> 
+            
+            <hr/>
+            
+            <h2>Big Data Library:</h2>
+            
+            <p>This assignment requires information to be extracted from JSON files provided by the NASA NeoW API service. In order to simplify the data extraction process, you can use the <a rel="noopener" href="https://github.com/berry-cs/big-data-cse"><code>BigData</code> library</a> to parse <code>NearEarthObject</code> records from the datasets. This library provides several powerful data extraction tools for XML and JSON formatted data, and is capable of transforming structured text into Java objects using a special constructor convention.</p>
+            
+            <p>In order to utilize the <code>BigData</code> library, you must include <a rel="noopener" href="http://cs.berry.edu/big-data/bigdata.jar"><code>bigdata.jar</code></a> in to your project. You can include a <code>JAR</code> file in the following manner, depending on your IDE: <span style="color:red;">(DO NOT SUBMIT THE JAR FILE WITH YOUR JAVA FILES. OTHERWISE 10 POINTS WILL BE DEDUCTED)</span></p>
+            
+            <b>Using a JAR in Eclipse:</b>
+                <ul>
+                    <li>Right click the project name in the &quot;Package Explorer&quot; tab (on the left, by default) - Select &quot;Build Path&quot; - Select &quot;Add External Archives...&quot; - Navigate to where you saved <code>bigdata.jar</code> and select it.</li>
+                </ul>
+            
+            <b>Using a JAR NetBeans</b>:
+                <ul>
+                    <li>Right click the project name in the &quot;Package Explorer&quot; tab (on the left, by default) - Click on &quot;Properties&quot; - Select &quot;Libraries&quot; on the left - Click on &quot;Add JAR/Folder&quot; on the right - Navigate to where you saved <code>bigdata.jar</code> and select it.</li>
+                </ul>
+                
+            <b>Using a JAR in IntelliJ: <a rel="noopener" href="http://stackoverflow.com/questions/1051640/correct-way-to-add-external-jars-lib-jar-to-an-intellij-idea-project">See here</a></b>
+            
+            <p>
+            <b>Using a JAR on the command line: <a rel="noopener" href="http://stackoverflow.com/questions/2096283/including-jars-in-classpath-on-commandline-javac-or-apt">See here</a></b> 
+            </p>
+            
+    
+            <p>Now you can <code>&quot;import big.data.DataSource&quot;</code> in your source code (or any other class from the <code>big.data</code> library that you need).</p>
+            
+            <p><span class="green"><b>Note:</b></span> The NASA NeoW service returns a page of records in the form of a <a rel="noopener" href="https://www.w3schools.com/js/js_json.asp">JSON file</a>. JSON is a popular syntax structure used to store and exchange data between applications, similar to XML or YML. For this assignment, <b>you do not need to know the inner workings of JSON documents</b> - the <code>BigData</code> library will do all the complex parsing and data extraction for you.</p>
+            
+            <p>You can connect a <code>DataSource</code> object to a JSON file by using the static <code>connectJson()</code> method (<i>there are also methods which connect to other data file schemas, such as XML, but this assignment will focus on JSON</i>). Once the <code>DataSource</code> is connected, you can begin extracting data from it. The <code>DataSource</code> class contains a useful method called <code>fetchArray()</code>, which automatically constructs instances of a class given the class name as a String and a list of identifiers to be used in the constructor (<i>see the code below for an example</i>). The following code shows an example of how you can use the <code>DataSource</code> class in your code to extract data from a JSON file and construct an array of <code>MyData</code> instances.</p>
+            
+            <pre>
+    <span style="color: #00B050;">// JSON file returned by http://www.myRemoteDataSource.com/myDataRecords.json</span>
+    {
+        &quot;my_data&quot; : [ {
+            &quot;my_data_string&quot; : &quot;Hello&quot;,       <span style="color: #00B050;">// Identifier = &quot;my_data/my_data_string&quot;</span>
+            &quot;my_data_double&quot; : 3.1415,        <span style="color: #00B050;">// Identifier = &quot;my_data/my_data_double&quot;</span>
+            &quot;my_data_timestamp&quot; : 1460913343  <span style="color: #00B050;">// Identifier = &quot;my_data/my_data_timestamp&quot;</span>
+        }, {
+            &quot;my_data_string&quot; : &quot;World&quot;,
+            &quot;my_data_double&quot; : 6.2831,
+            &quot;my_data_timestamp&quot; : 1460913343
+        }, {
+            &quot;my_data_string&quot; : &quot;CSE 214&quot;,
+            &quot;my_data_double&quot; : 14.333,
+            &quot;my_data_timestamp&quot; : 1460913343
+        } ]
+    }
+     
+     
+    <span style="color: #00B050;">// MyData.java</span>        
+    import java.util.Date;
+    class MyData {
+        private String myDataString;
+        private double myDataDouble;
+        private Date myDataDate;
+        <span style="color: #00B050;">// Constructor used by fetchArray()</span>
+        public MyData(String initString, double initDouble, long initTimestamp) {
+            this.myDataString = initString;
+            this.myDataDouble = initDouble;
+            this.myDataDate = new Date(initTimestamp);
+        }
+        public String toString() { 
+            return myDataString + &quot;, &quot; + myDataDouble + &quot;, &quot; + myDataDate.toString(); 
+        }
+    
+    }
+        
+        
+    <span style="color: #00B050;">// in main():</span>
+    DataSource ds = DataSource.connectJSON(<span class="green">&quot;http://www.myRemoteDataSource.com/myDataRecords.json&quot;</span>);
+    <span class="warning"><b>ds.load();</b></span>
+    
+    <span style="color: #00B050;">// Constructs and returns an array of 3 MyData instances.</span>
+    <span style="color: #00B050;">// fetchArray() takes the name of the class as a String as the first parameter, then a</span>
+    <span style="color: #00B050;">// list of identifiers showing it where to find the values for the constructor parameters.</span>
+    MyData[] myDatas = ds.fetchArray(
+        <span class="green">&quot;MyData&quot;</span>,                    <span style="color: #00B050;">// Name of the class as a String.</span>
+        <span class="green">&quot;my_data/my_data_string&quot;</span>,    <span style="color: #00B050;">// Identifier for constructor parameter 1 (initString).</span>
+        <span class="green">&quot;my_data/my_data_double&quot;</span>,    <span style="color: #00B050;">// Identifier for constructor parameter 2 (initDouble).</span>
+        <span class="green">&quot;my_data/my_data_timestamp&quot;</span>  <span style="color: #00B050;">// Identifier for constructor parameter 3 (initTimestamp).</span>
+    );
+    
+    for(int i = 0; i &lt; myDatas.length; ++i) {
+        System.out.println(myDatas[i].toString());
+    }
+    
+    <span style="color: #00B050;">// Output</span>
+    Hello, 3.1415, Sun Apr 16 17:15:43 EET 2016
+    World, 6.2831, Sun Apr 16 17:15:43 EET 2016
+    CSE 214, 14.333, Sun Apr 16 17:15:43 EET 2016
+            </pre>
+            
+            <hr/>
+            <h2>Alternative method to read from JSON files:</h2>            
+            
+            <pre>
+        
+    <span style="color: #00B050;">// in main():</span>
+    import org.json.JSONException;
+    import org.json.JSONObject;
+    import org.json.JSONTokener;
+    import java.net.URL;
+    import java.io.*;
+	
+    ...
+	
+    String req = &quot;http://www.myRemoteDataSource.com/myDataRecords.json&quot;;
+    try {
+        URL getRequest = new URL(req); <span style="color: #00B050;">//Creates a URL object from the URL string</span>
+        JSONTokener tokener = new JSONTokener(getRequest.openStream());
+        JSONObject root = new JSONObject(tokener);
+
+        <span style="color: #00B050;">//look into the JSONObject methods to figure out how to extract each piece of the JSON</span>
+
+        <span style="color: #00B050;">//prints all the NearEarthObjects as a string</span>
+        System.out.println(root.getJSONArray(&quot;near_earth_objects&quot;).toString());
+
+    } catch(IOException ex) {
+           ...
+    } catch(JSONException ex) {
+           ... 
+    }
+            </pre>
+            
+            <hr/>
+
+            <h2>Input Format:</h2>
+            
+            <p>Each menu operation is entered on its own line and should be case insensitive (i.e. q and Q are the same). If the user selects <code>S</code> to sort the database, the user should be prompted to select the sort key using the indicated sub-menu (see sample I/O for examples).</p>
+            
+            <p>The server accepts requests using a query convention over traditional HTTP GET requests. Requests can be made using the following form:</p>
+            <pre>
+        <b>https://api.nasa.gov/neo/rest/v1/neo/browse?page=<span class="green">0</span>&amp;api_key=<span class="green">DEMO_KEY</span></b>
+            </pre>
+            <p>The request above asks for page number <code>0</code> using the <code>DEMO_KEY</code> (<i>your program should replace <code>DEMO_KEY</code> with your specific <code>API_KEY</code></i>). This query returns a JSON file contining an array of NEO records formatted in the following manner (<i>Note that unused fields have been filtered out</i>). Keep in mind that you do not need to read this file directly - <code>BigData</code> will do that for you. It is important however to understand where the information is coming form, so that you may better understand how the program works.</p>
+            <pre>
+    {
+        &quot;links&quot; : {
+            <span style="color: #00B050;">// Link info (ignore)...</span>
+        },
+        &quot;page&quot; : {
+            <span style="color: #00B050;">// Page info (ignore)...</span>
+        }
+        &quot;near_earth_objects&quot; : [ { <span style="color: #00B050;">// Array of NEO records.</span>
+            &quot;neo_reference_id&quot; : &quot;3644696,&quot;
+            &quot;name&quot; : &quot;(2016 DK)&quot;,
+            &quot;absolute_magnitue_h&quot; : 22.4.
+            &quot;estimated_diameter&quot; : {
+                &quot;kilometers&quot; : {
+                    &quot;estimated_diameter_min&quot; : 0.0880146521,
+                    &quot;estimated_diameter_max&quot; : 0.1968067451
+                }
+            },
+            &quot;is_potentially_hazardous_asteroid&quot; : false,
+            &quot;close_approach_data&quot; : [ {
+                &quot;epoch_date_close_approach&quot; : 1455696000000,
+                &quot;miss_distance&quot; : {
+                    &quot;kilometers&quot; : &quot;13781428&quot;
+                },
+                &quot;orbiting_body&quot; : &quot;Earth&quot;
+            }],
+            
+        }, {
+            <span style="color: #00B050;">// Next NEO record.</span>
+        }, <span style="color: #00B050;">// ...</span>
+        
+        ]
+    }
+            </pre>
+            
+            <hr/>
+            
+            <h2>Output Format:</h2>
+            
+            <p>All lists must be printed in a nice and tabular form as shown in the sample output. You may use C style formatting as shown in the following example. The example below shows two different ways of displaying the name and address at pre-specified positions 21, 26, 19, and 6 spaces wide. If the ‘-’ flag is given, then it will be left-justified (padding will be on the right), else the region is right-justified. The ‘s’ identifier is for strings, the ‘d’ identifier is for integers. Giving the additional ‘0’ flag pads an integer with additional zeroes in front.</p>
+            
+            <pre>
+    String name = &quot;Doe Jane&quot;;
+    String address = &quot;32 Bayview Dr.&quot;;
+    String city = &quot;Fishers Island, NY&quot;;
+    int zip = 6390;
+    
+    System.out.println(String.format(&quot;%-21s%-26s%19s%06d&quot;, name, address, city, zip));
+    System.out.printf(&quot;%-21s%-26s%19s%06d&quot;, name, address, city, zip);
+
+<span style="color: #00B050;">   // Output</span>
+    Doe Jane             32 Bayview Dr.             Fishers Island, NY 06390
+    Doe Jane             32 Bayview Dr.             Fishers Island, NY 06390
+            </pre>
+            
+            <hr/>
+            
+            <h2>Sample Input/Output:</h2>
+            <pre><span class="code"> <span style="color: #00B050;">// Comment in green</span>, <span style="color: red;">input in red</span>, output in black
+
+  Welcome to NEO Viewer!
+  
+  Option Menu:
+    A) Add a page to the database
+    S) Sort the database 
+    P) Print the database as a table.
+    Q) Quit
+  
+  Select a menu option: <span style="color: red;">A</span>    
+  
+  Enter the page to load: <span style="color: red;">1</span>
+  
+  Page loaded successfully!
+  
+  <span style="color: #00B050;">// menu not shown in the sample input/output</span>
+  Select a menu option: <span style="color: red;">P</span>  
+  
+  ID   |           Name            | Mag. | Diameter | Danger | Close Date | Miss Dist | Orbits
+================================================================================================
+2001981  1981 Midas (1973 EA)        15.3    3.780     true     04-04-1902   56101523    Earth
+2002059  2059 Baboquivari (1963 UA)  16.0    2.739     false    10-24-1907   54636908    Earth
+2002061  2061 Anza (1960 UA)         16.5    2.175     false    08-18-1926   33258270    Earth
+  ... <span style="color: #00B050;">// more records are included. <span style="color:red;">Print the first 26 letters of Name. Keep all spacing exactly the same.</span></span>
+  
+  <span style="color: #00B050;">// menu not shown in the sample input/output</span>
+  Select a menu option: <span style="color: red;">S</span>  
+  
+  R) Sort by referenceID
+  D) Sort by diameter
+  A) Sort by approach date
+  M) Sort by miss distance
+  
+  Select a menu option: <span style="color: red;">D</span>
+  
+  Table sorted on diameter.
+  
+  <span style="color: #00B050;">// menu not shown in the sample input/output</span>
+  Select a menu option: <span style="color: red;">P</span>  
+  
+  ID   |           Name            | Mag. | Diameter | Danger | Close Date | Miss Dist | Orbits
+================================================================================================
+2002061  2061 Anza (1960 UA)         16.5    2.175     false    08-18-1926   33258270    Earth
+2002059  2059 Baboquivari (1963 UA)  16.0    2.739     false    10-24-1907   54636908    Earth
+2001981  1981 Midas (1973 EA)        15.3    3.780     true     04-04-1902   56101523    Earth
+  ... <span style="color: #00B050;">// more records are included. <span style="color:red;">Print the first 26 letters of Name. Keep all spacing exactly the same.</span></span>
+  
+  <span style="color: #00B050;">// menu not shown in the sample input/output</span>
+  Select a menu option: <span style="color: red;">S</span>  
+  
+  R) Sort by referenceID
+  D) Sort by diameter
+  A) Sort by approach date
+  M) Sort by miss distance
+  
+  Select a menu option: <span style="color: red;">A</span>
+  
+  Table sorted on approach date.
+  
+  <span style="color: #00B050;">// menu not shown in the sample input/output</span>
+  Select a menu option: <span style="color: red;">P</span>  
+  
+  ID   |           Name            | Mag. | Diameter | Danger | Close Date | Miss Dist | Orbits
+================================================================================================
+2001981  1981 Midas (1973 EA)        15.3    3.780     true     04-04-1902   56101523    Earth
+2002059  2059 Baboquivari (1963 UA)  16.0    2.739     false    10-24-1907   54636908    Earth
+2002061  2061 Anza (1960 UA)         16.5    2.175     false    08-18-1926   33258270    Earth
+  ... <span style="color: #00B050;">// more records are included. <span style="color:red;">Print the first 26 letters of Name. Keep all spacing exactly the same.</span></span>
+  
+  <span style="color: #00B050;">// menu not shown in the sample input/output</span>
+  Select a menu option: <span style="color: red;">S</span>  
+  
+  R) Sort by referenceID
+  D) Sort by diameter
+  A) Sort by approach date
+  M) Sort by miss distance
+  
+  Select a menu option: <span style="color: red;">M</span>
+  
+  Table sorted on miss distance.
+  
+  <span style="color: #00B050;">// menu not shown in the sample input/output</span>
+  Select a menu option: <span style="color: red;">P</span>  
+ 
+  ID   |           Name            | Mag. | Diameter | Danger | Close Date | Miss Dist | Orbits
+================================================================================================
+2002061  2061 Anza (1960 UA)         16.5    2.175     false    08-18-1926   33258270    Earth
+2002059  2059 Baboquivari (1963 UA)  16.0    2.739     false    10-24-1907   54636908    Earth
+2001981  1981 Midas (1973 EA)        15.3    3.780     true     04-04-1902   56101523    Earth
+  ... <span style="color: #00B050;">// more records are included. <span style="color:red;">Print the first 26 letters of Name. Keep all spacing exactly the same.</span></span>
+  <span style="color: #00B050;">// menu not shown in the sample input/output</span>
+  Select a menu option: <span style="color: red;">Q</span>
+  
+  Program terminating normally...
+
+</span></pre></div>
+        <hr size="2" width="100%" align="center"/>
+        <p align="center" style="text-align:center;"><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:maroon;"><a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">Course Info</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/schedule.htm" target="_blank">Schedule</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/sections.htm" target="_blank">Sections</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">Announcients</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/homework.htm" target="_blank">Homework</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/exams.htm" target="_blank">Exams</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/help.htm" target="_blank">Help/FAQ</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/grades.htm" target="_blank">Grades</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">HOME</a></span></b><b> </b></p>
+
+
+
+<script type="module" src="https://s.brightspace.com/lib/bsi/20.23.4-262/unbundled/mathjax.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					if (document.querySelector('math') || /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(document.body.innerHTML)) {
+						document.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+							elm.setAttribute('style', 'display: block; height: 0.5rem;');
+						});
+
+						window.D2L.MathJax.loadMathJax({
+							'outputScale': 1.3,
+							'renderLatex': true
+						});
+					}
+				});</script><script type="module" src="https://s.brightspace.com/lib/bsi/20.23.4-262/unbundled/prism.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					document.querySelectorAll('.d2l-code').forEach(code => {
+						window.D2L.Prism.formatCodeElement(code);
+					});
+				});</script></body></html>

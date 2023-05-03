@@ -1,0 +1,1003 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body>
+
+
+
+
+
+
+
+<div lang="EN-US">
+<div>
+
+<h2 align="center" style="text-align:center;">
+    <span>
+        <img width="244" height="121" src="http://www.cs.stonybrook.edu/~cse214/images/logo.gif"/>
+    </span>
+    <span>
+        <span style="color:purple;"><br/>
+        </span>
+    </span>
+    <span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:maroon;">
+        HOMEWORK 5 - Spring 2023
+    </span>
+</h2>
+
+<div align="center" style="text-align:center;"><span>
+
+<hr size="2" width="100%" align="center"/>
+
+</span></div>
+
+<h3>
+    <strong><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+        HOMEWORK 5 - due Tuesday, April 11th no later than <span style="color:black;">7:00PM</span> 
+    </span></strong>
+</h3>
+
+<p><strong><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+    REMINDERS: 
+</span></strong></p>
+
+<ul type="disc">
+   <li><b><span style="color:red;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+   Submit your files only via CodeGrade in the <a rel="noopener" href="https://mycourses.stonybrook.edu/d2l/le/content/358338/Home">Content page on Brightspace</a>. Access CodeGrade by clicking &quot;HW5 - CODEGRADE SUBMISSION LINK&quot; for your submission.</span></b><span></span></li>
+
+				<li><b><span style="color:red;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+   Use of a package is optional. If you wish to use it, make sure to name it &quot;hw5&quot; (all in lower case). Otherwise, you will lose points.</span></b><span></span></li>
+
+ <li><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">Be sure your
+     code follows the <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/codingstyle.htm" target="_blank">coding
+     style</a> for CSE214. </span></b><span></span></li>
+ <li><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">Make sure
+     you read the warnings about <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">academic dishonesty</a>.
+     <i>Remember, all work you submit for homework or exams MUST be your own
+     work.</i> </span></b></li>
+ 
+
+<li><b><span style="font-family:Arial;color:red;">You
+    may not use any Java API Data Structures to implement this assignment. </span></b><b><span style="font-family:Arial,sans-serif;"></span></b></li>
+<li><b><span style="font-family:Arial,sans-serif;">You may
+     use Scanner, InputStreamReader, or any other class that you wish for
+     keyboard input.</span></b></li>
+</ul>
+
+<hr size="2" width="100%" align="center"/>
+
+
+
+<p>In this assignment, you will be implementing a simple a text based game called <i><a rel="noopener" href="https://en.wikipedia.org/wiki/Zork">Zork</a></i>. Zork is a very old computer game (<i>one of the first</i>) which uses a tree data structure to provide the player with options to further the story line. The game proceeds by displaying a message and providing the user with several options. Making a decision results in different branches of the tree being taken, resulting in different messages and ultimately a unique ending state.</p>
+
+<p>You are required to create both a <i>Zork</i> game creator/editor and function which runs a game. To allow games to be run on different occasions (<i>as well as allowing games to be exchanged between users</i>), the program should be capable of saving and reading games to and from a text file (<i>See the Data Format section for more information</i>). You may use the <code><a rel="noopener" href="https://www3.cs.stonybrook.edu/~cse214/hw/hw5_files/hw5-SampleStory.txt">SampleStory.txt</a></code> example we have provided along with this assignment as you work, however, you are encouraged to come up with your own games which follow the specified format.</p>
+
+
+<h2 align="center" style="text-align: center;">
+    <img style="width:60%;max-width:600px;" src="http://www.cs.stonybrook.edu/~cse214/hw/hw5-images/zork_tree.jpg"/> <br/> <br/>
+    Example Story Tree
+</h2> 
+
+<hr size="2" width="100%" align="center"/>
+
+<h2>Required Classes</h2>
+<p>The following sections describe classes which are required for this assignment. Each 
+section provides a description and the specifcation necessary to complete each class. If you feel
+that additional methods would be useful, you may feel free to add them during your implementation
+as you see fit.</p>
+
+<p><span class="green">Note:</span> The instructions detailed in this specifcation should be considered more as a guidelines than as fixed rules. Please feel free to add additional classes, methods, member variables as you see fit. As long as the requirements are satisfied, i.e. all operations in the grading key are supported, you may be as flexible as you like when implementing the assignment. Please keep in mind that standard OOP practices should still be followed, and points will be deducted for poor software design (<i>e.g. using <code>public</code> instance variables</i>).</p><br/>
+
+
+<h2 align="center" style="text-align: center;">
+    <img style="width:90%;max-width:1000px;" src="http://www.cs.stonybrook.edu/~cse214/hw/hw5-images/zork.jpg"/> <br/> <br/>
+    UML Diagram
+</h2> 
+
+<h3>1. StoryTreeNode</h3>
+<p>Write a fully-documented class named <span class="code">StoryTreeNode</span> which represents a segment of the story. The <span class="code">StoryTreeNode</span> class should contain 3 <span class="code">StoryTreeNode</span> references, <span class="code">leftChild</span>, <span class="code">middleChild</span>, and <span class="code">rightChild</span>. In addition, the class should contain three <span class="code">String</span> member variables: <span class="code">position</span>, which indicates the position of the node in the tree; <span class="code">option</span>, which represents the text that should be displayed to the user to describe what choice this node represents (this will be read from the parent node), and the <span class="code">message</span>, which is the message displayed when the user chooses this option (i.e: the consequence of taking the option).</p>
+
+<p>
+<font color="red">NOTE</font>: The <span class="code">position</span> member variable should be a
+full string with no spaces, tabs, or any other whitespace.</p>
+
+<ul>
+    
+    <li>
+        <b><code>static final String WIN_MESSAGE = &quot;YOU WIN&quot;</code></b>
+        <ul>
+            <li>
+                A special string sequence which represents a leaf node which is a <i>winning</i> state. Note that a node is a winning state <b>if and only if</b> it is a <b>leaf</b> AND it&#39;s <code>message</code> <b>contains <code>WIN_MESSAGE</code> as a substring</b>.
+            </li>
+        </ul>
+    </li><br/>    
+    
+    <li>
+        <b><code>static final String LOSE_MESSAGE = &quot;YOU LOSE&quot;</code></b>
+        <ul>
+            <li>
+                A special string sequence which indicates that a leaf node is a <i>losing</i> state. Note that a node is a losing state <b>if and only if</b> it is a <b>leaf</b> AND it&#39;s <code>message</code> <b> does <span class="warning">NOT</span> contain <code>WIN_MESSAGE</code> as a substring</b>. Having <code>LOSE_MESSAGE</code> as a substring will be better for the user experience, but it is not required for a leaf to be a losing node. ALL leaves which do not contain <code>WIN_MESSAGE</code> as a substring of their <code>message</code> are considered losing states.
+            </li>
+        </ul>
+    </li><br/>
+ 
+    
+    <li>
+        <b><code>String position</code></b>
+        <ul>
+            <li>
+                A <code>String</code> representing the position of the node in the tree. This variable should <b>always</b> be equal to the name of the parent node plus this node&#39;s position in the parent&#39;s children collection (<i>the exception being the child of the <code>root</code> node, which is always named <code>&quot;1&quot;</code></i>. For example, the <i>left child</i> of a node with name <code>&quot;1-2-3&quot;</code> would be <code>&quot;1-2-3<span class="green">-1</span></code>, the <i>middle child</i> of the same node would be <code>&quot;1-2-3<span class="green">-2</span></code>, and the <i>right child</i> of the same node would be <code>&quot;1-2-3<span class="green">-3</span></code>.
+            </li>
+        </ul>
+    </li><br/>
+    <li>
+        <b><code>String option</code></b>
+        <ul>
+            <li>
+                A <code>String</code> representing the option which will select this node. Note that this option is only displayed when the <code>cursor</code> currently selects the parent of this node - only after the user selects this option does the <code>cursor</code> select this node.
+            </li>
+        </ul>
+    </li><br/>
+    <li>
+        <b><code>String message</code></b>
+        <ul>
+            <li>
+                A <code>String</code> representing the message which is displayed after this node has been selected by the user.
+            </li>
+        </ul>
+    </li><br/>
+    <li>
+        <b><code>StoryTreeNode leftChild</code></b>
+    </li><br/>
+    <li>
+        <b><code>StoryTreeNode middleChild</code></b>
+    </li><br/>
+    <li>
+        <b><code>StoryTreeNode rightChild</code></b>
+    </li><br/>
+    
+   <p><span class="warning">NOTE:</span> The children of the tree should always be left aligned (i.e: if a child is removed, all the other children should be left shifted, and for each decendent, the decendent&#39;s <code>position</code> variable should be updated to reflect the change). This is best done with a <b>recursive traversal</b> of the children of this node placed within the setter(s) for the children.</p><br/>
+           
+    <li><b><code>public StoryTreeNode()</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Default constructor for the <code>StoryTreeNode</code> class.</li>
+                    <li><span class="green">Note:</span> you may include custom constructors which take any parameters you like.</li>
+                </ul>
+            </li>
+        </ul>
+    </li><br/>
+    
+    <li><b><code>public boolean isLeaf()</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Checks if this node has any children.</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Preconditions:</i>
+                <ul>
+                    <li>This node is initialized</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Postconditions:</i>
+                <ul>
+                    <li>The tree remains unchanged</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Returns:</i>
+                <ul>
+                    <li>True if there are no children</li>
+                    <li>False if there is at least one child.</li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li><li><b><code>public boolean isWinningNode()</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Checks if this is a winning node. In order to be a winning node, this node must be a leaf and contain the winning message.</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Preconditions:</i>
+                <ul>
+                    <li>This node is initialized</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Postconditions:</i>
+                <ul>
+                    <li>The tree remains unchanged</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Returns:</i>
+                <ul>
+                    <li>True if this node is a leaf and contains <code>WIN_MESSAGE</code> in the <code> message</code>.</li>
+                    <li>False otherwise.</li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li><li><b><code>public boolean isLosingNode()</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Checks if this is a losing node. In order to be a losing node, this node must be a leaf and contain the losing message.</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Preconditions:</i>
+                <ul>
+                    <li>This node is initialized</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Postconditions:</i>
+                <ul>
+                    <li>The tree remains unchanged</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Returns:</i>
+                <ul>
+                    <li>True if this node is a leaf and does NOT contain <code>WIN_MESSAGE</code> in the <code>message</code>.</li>
+                    <li>False otherwise.</li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+</ul>
+
+
+
+
+
+
+<h3>2. StoryTree</h3>
+<p>Write a fully-documented class named <span class="code">StoryTree</span>, which represents the primary data structure for the <i>Zork</i> game. This class should be a ternary (<i>3-child</i>) tree of <code>StoryTreeNodes</code>, which are structured as a continuous chain of decisions the user may make to reach the end of the game (<i>any leaf node</i>).</p>
+
+<ul>
+    
+    <li>
+        <b><code>StoryTreeNode root</code></b>
+        <ul>
+            <li>
+                A reference to the root <code>StoryTreeNode</code> of this tree. All <code>StoryTree</code> instances should have the same <code>root</code> node with the following attributes:
+                <ul>
+                    <li><code>position = &quot;root&quot;</code></li>
+                    <li><code>option = &quot;root&quot;</code></li>
+                    <li><code>message = &quot;Hello, welcome to Zork!&quot;</code></li>
+                </ul><br/>
+                Even if the <code>StoryTree</code> is empty and contains no <code>StoryTreeNodes</code>, the <code>root</code> variable should always reference an object with these attributes. This is the starting point of the story, and should have a single left child which begins the game and provides the user with the first <code>message</code>.
+            </li>
+        </ul>
+    </li><br/>
+    
+    <li>
+        <b><code>StoryTreeNode cursor</code></b>
+        <ul>
+            <li>
+                A reference to the currently selected <code>StoryTreeNode</code> in the tree. The <code>cursor</code> should <b>never</b> be <code>null</code> and should select the <code>root</code> node by default.
+            </li>
+        </ul>
+    </li><br/>
+    
+    <li>
+        <b><code>GameState state</code></b>
+        <ul>
+            <li>
+                The current state of the game, which indicates whether the game has ended and, if so, what the result of the game is.
+            </li>
+        </ul>
+    </li><br/>
+    
+    <li><b><code>public StoryTree()</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Default constructor for the <code>StoryTree</code> class.</li>
+                    <li><span class="green">Note:</span> you may include custom constructors which take any parameters you like.</li>
+                </ul>
+            </li>
+        </ul>
+    </li><br/>
+    
+    <li><b><code>public <span class="green">static</span> StoryTree readTree(String filename)</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Reads in a text file describing a StoryTree. See sample input for an example.</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Parameters:</i>
+                <ul>
+                    <li><code>filename</code>:
+                        <ul>
+                        <li>Name of the file to read from.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+
+            <li><i>Preconditions:</i>
+                <ul>
+                    <li><code>filename</code> is a non-null, non-empty String that points to a file that exists that is readable, and is valid. </li>
+                </ul>
+            </li><br/>
+
+            <li><i>Returns:</i>
+                <ul>
+                    <li>A new StoryTree generated by the passed in text file is returned.</li>
+                </ul>
+            </li><br/>
+            
+            <li><i>Throws:</i>
+                <ul>
+                    <li><code>IllegalArgumentException</code>:
+                        <ul>
+                            <li>
+                                filename is empty or null.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><code>DataFormatException</code>:
+                        <ul>
+                            <li>
+                                The file contained data inconsistent with the expected data format (<span class="green">Note:</span> This is a built in exception. Don&#39;t make a custom exception.)
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+    
+    <li><b><code>public <span class="green">static</span> void saveTree(String filename, StoryTree tree)</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Saves a <code>StoryTree</code> to the indicated file using the specified data format (same as input).</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Parameters:</i>
+                <ul>
+                    <li><code>filename</code>:
+                        <ul>
+                        <li>Name of the file to read from.</li>
+                        </ul>
+                    </li>
+                    <li><code>tree</code>:
+                        <ul>
+                        <li>A reference to the tree to save to the indicated file.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+
+            <li><i>Preconditions:</i>
+                <ul>
+                    <li><code>tree</code> is non-null.</li>
+                    <li><code>filename</code> is a non-null, non-empty String.</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Throws:</i>
+                <ul>
+                    <li><code>IllegalArgumentException</code>:
+                        <ul>
+                            <li>
+                                <code>filename</code> is empty or null.
+                            </li>
+                            <li>
+                                <code>tree</code> is null.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+    
+    <li><b><code>public GameState getGameState()</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Gets the current state of the game (<code>state</code> variable).</li>
+                </ul>
+            </li><br/>
+            <li><i>Preconditions:</i>
+                <ul>
+                    <li>state is not null.</li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+
+    <li><b><code>public String getCursorPosition()</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Gets the current position of the cursor. For example, if cursor referred to a StoryTreeNode with position = &quot;1-2-1&quot;, this method returns &quot;1-2-1&quot;. Note the cursor must <span class="warning">NEVER</span> be null.</li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+    
+    <li><b><code>public String getCursorMessage()</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Gets the current message of the cursor. For example, if cursor referred to a StoryTreeNode with message = &quot;Hello World&quot;, this method returns &quot;Hello World&quot;.</li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+    
+    <li><b><code>public String[][] getOptions()</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Returns an array of <code>String</code> <span class="green">pairs</span> - {position, option} for each immediate child of the cursor. Do not recurse into those childrens&#39; children.<br/>
+                    For example, if the cursor currently references the node with position &quot;1&quot;, getOptions() could return the following:
+                    <pre>{ {&quot;1-1&quot;, &quot;Wake up.&quot;},
+  {&quot;1-2&quot;, &quot;Hit snooze.&quot;},
+  {&quot;1-3&quot;, &quot;Turn off alarm&quot;} }</pre>
+  In this case, &quot;1-1&quot; would be the first column, &quot;Wake up.&quot; would be the second column.</li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+
+    <li><b><code>public void setCursorMessage(String message)</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Sets the message for the current cursor.</li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+    
+    <li><b><code>public void setCursorOption(String option)</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Sets the option for the current cursor.</li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+
+        
+    <li><b><code>public void resetCursor()</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Resets the cursor to the root node.</li>
+                </ul>
+            </li><br/>
+            <li><i>Postconditions:</i>
+                <ul>
+                    <li>Cursor references root node.</li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+
+        
+    <li><b><code>public void selectChild(String position)</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Selects the child with the name indicated by <code>position</code>.</li>
+                </ul>
+            </li><br/>
+            <li><i>Parameters:</i>
+                <ul>
+                    <li><code>position</code>
+                        <ul>
+                            <li>The <code>position</code> String of the child to node to select.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+            <li><i>Preconditions:</i>
+                <ul>
+                    <li>The child with the indicated <code>position</code> member variable exists as a <b>direct</b> child of the <code>cursor</code>.</li>
+                </ul>
+            </li><br/>
+            <li><i>Postconditions:</i>
+                <ul>
+                    <li>Cursor references node indicated by <code>position</code>.</li>
+                </ul>
+            </li><br/>
+            <li><i>Throws:</i>
+                <ul>
+                    <li><code>InvalidArgumentException</code>: 
+                        <ul>
+                            <li>
+                                <code>position</code> is empty or null.
+                            </li>
+                        </ul>
+                    </li>
+                    <li><code>NodeNotPresentException</code>: 
+                        <ul>
+                            <li>
+                                Node with indicated position variable was not found. Custom exception.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+
+    <li><b><code>public void addChild(String option, String message)</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Adds a new child under the current cursor, with given option and message. You MUST compute the position String in this method.</li>
+                </ul>
+            </li><br/>
+            <li><i>Parameters:</i>
+                <ul>
+                    <li><code>option</code>
+                        <ul>
+                            <li>The new String to set as the <code>option</code> of the new child.</li>
+                        </ul>
+                    </li>
+                    <li><code>message</code>
+                        <ul>
+                            <li>The new String to set as the <code>message</code> of the new child.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+            <li><i>Postconditions:</i>
+                <ul>
+                    <li>Cursor has new child, with specified message and option.</li>
+                </ul>
+            </li><br/>
+            <li><i>Throws:</i>
+                <ul>
+                    <li><code>InvalidArgumentException</code>:
+                        <ul>
+                            <li>
+                                Either String is empty or null.    
+                            </li>
+                        </ul>
+                    </li>
+                    <li><code>TreeFullException</code>:
+                        <ul>
+                            <li>
+                                All three child spots are already full.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+
+    <li><b><code>public StoryTreeNode removeChild(String position)</code></b>
+    	<ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Removes an immediate child under the current cursor. This method implicitly removes the entire sub-tree for which the indicated child is root.ldren of the cursor.</li>
+                </ul>
+            </li><br/>
+            <li><i>Parameters:</i>
+                <ul>
+                    <li><code>position</code>
+                        <ul>
+                            <li>String indicating the <code>position</code> of the child to be removed.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+            
+            <li><i>Preconditions:</i>
+                <ul>
+                    <li>The child with the indicated <code>position</code> member variable exists as a <b>direct</b> child of the <code>cursor</code>.</li>
+                </ul>
+            </li><br/>
+            
+            <li><i>Postconditions:</i>
+                <ul>
+                    <li>The indicated child and it&#39;s entire sub-tree have been removed from the tree.</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Returns:</i>
+                <ul>
+                    <li>A reference to the child removed (<i>along with it&#39;s attached sub-tree)</i>.</li>
+                </ul>
+            </li><br/>
+            <li><i>Throws:</i>
+                <ul>
+                    <li><code>NodeNotPresentException</code>: 
+                        <ul>
+                            <li>
+                                Node with indicated position variable was not found. Custom exception.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+        </ul>
+    </li>
+
+
+</ul>
+
+
+<h3>3. Zork</h3>
+<p>Write a fully-documented class named <span class="code">Zork</span>. The class should contain a <span class="code">main</span> method along with two static utility functions, <code>editGame(StoryTree tree)</code> and <code>playGame(StoryTree tree)</code>. These are the two functions a user can choose to run, which will allow the user to construct and traverse a <code>StoryTree</code>, respectively. When the program begins, it should use the static function <code>StoryTree.readTree(filename)</code> to build the tree from the file (<i>if the file does not yet, the function should simply return a tree with a single root node.</i>). After constructing the tree, the program should ask the user whether they wish to edit this tree or play a game using this tree.</p>
+
+<ul>
+    <li><b><code>public <span class="green">static</span> void main(String[] args)</code></b>
+        <ul>
+
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Requests the user to enter a file name and builds a tree from the indicated file (<i>if it exists, otherwise uses an empty tree</i>) and asks the user whether they would like to edit this tree (E), play a game based on this tree (P), or exit the program (Q).</li>
+                    <li><span class="green">Note:</span> The <code>StoryTree</code> should always be saved to the save file which was read upon closing the program.</li>
+                </ul>
+            </li><br/>
+
+        </ul>
+    </li>
+</ul>
+
+<ul>
+    <li><b><code>public <span class="green">static</span> void editTree(StoryTree tree)</code></b>
+        <ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Provides a user interface allowing a user to edit the story followed by the game represented by <code>tree</code>. This function should continue to process user commands until the user enters <code>Q</code> to exit. The following commands should be supported for editing the tree:</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+</ul>
+
+<table align="center" border="1" cellpadding="5" cellspacing="1"><b>
+    </b><thead>
+        <tr>
+            <th>Command</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tr>
+        <td><span class="code">V</span></td>
+        <td>View the <code>cursor&#39;s</code> <code>position</code>, <code>option</code>, and <code>message</code>.</td>
+    </tr>
+    <tr>
+        <td><span class="code">S</span></td>
+        <td>Select a child of the <code>cursor</code> as the new <code>cursor</code>. This option should request which child to descend to (<i>1, 2, or 3</i>).</td>
+    </tr>
+    <tr>
+        <td><span class="code">O</span></td>
+        <td>Set the <code>option</code> of the <code>StoryNode</code> referenced by <code>cursor</code>.</td>
+    </tr>
+    <tr>
+        <td><span class="code">M</span></td>
+        <td>Set the <code>message</code> of the <code>StoryNode</code> referenced by <code>cursor</code>.</td>
+    </tr>
+    <tr>
+        <td><span class="code">A</span></td>
+        <td>Add a child <code>StoryNode</code> to the <code>cursor</code>.</td>
+    </tr>
+    <tr>
+        <td><span class="code">D</span></td>
+        <td>Delete a child from the <code>cursor</code>. This option should request which child to delete (<i>1, 2, or 3</i>).<br/><br/>
+        <span style="font-size:11pt;">
+            <span class="warning">CAUTION:</span> deleting a child deletes the <b>entire subtree</b> rooted at that node. In addition, after deleting a node the program should ensure that all nodes are shifted left as much as possible, recursively renaming nodes as necessary.
+        </span>
+        </td>
+    </tr>
+    <tr>
+        <td><span class="code">R</span></td>
+        <td>Moves the <code>cursor</code> to the root of the tree.<br/><br/>
+            <span class="warning">CAUTION:</span> this returns the cursor to the node at position &quot;1&quot;, rather than the true root (<i>node at position &quot;root&quot;</i>). The true root is a &quot;dummy&quot; node and should never be selected or altered.</td>
+    </tr>
+    <tr>
+        <td><span class="code">Q</span></td>
+        <td>Quit editing the tree and return from the function.</td>
+    </tr>
+</table><br/>
+
+<ul>
+    <b><code>public <span class="green">static</span> void playTree(StoryTree tree)</code></b>
+        <ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Provides a user interface allowing a player to play the game represented by <code>tree</code> This method will allow a user to traverse the tree by continually displaying messages and allowing the user to select options until a leaf is reached.</li>
+                </ul>
+            </li>
+        </ul>
+    
+</ul>
+
+<hr size="2" width="100%" align="center"/>
+
+<h2>Data Format</h2>
+
+<p>This assignment requires you to read data from and save data to a text file called <code>zork.txt</code>. The data in this file should follow a very strict format, which will be detailed as follows:</p>
+
+<ul>
+    
+    
+    <li>A line represent a single <code>StoryTreeNode</code> in the tree, using the following format to store it&#39;s data:</li><br/>
+
+    <ul>
+        <li>
+            <b><code>&quot;position | option | message&quot;</code></b>
+        </li>
+    </ul><br/>
+    
+    <li>The nodes are stored as a <b>pre-order traversal</b> of the full tree.</li>
+</ul>
+
+
+<h3>Writing Tree to File</h3>
+
+<p>Writing a tree to a file should proceed in a <b>pre-order traversal</b>. This is to ensure that the nodes in the tree can be read back in the same order and successfully inserted into the tree. While performing the pre-order traversal, you should write each node to its own line using the format indicated above.</p>
+
+<h3>Reading Tree from File</h3>
+
+<p>When building a tree from file, you should read a line and break it in to String tokens using the &quot;|&quot; character as the splitting character (<i>you may use <code>String.split()</code> or the <code>StringTokenizer</code> class for this purpose</i>). You should then construct a new <code>StoryTreeNode</code> using these tokens, and insert the node into the tree.</p>
+
+<p>Inserting the node into the tree can be done by parsing the <code>position</code> String as a sequence of commands beginning from the root. Remember that all <code>position</code> Strings will follow the format <code>&quot;1-2-3- ... &quot;</code>, which indicates the sequence of decisions starting from the root. For example, the position of the node <code>&quot;1-2-1-3&quot;</code> can be interpreted as:</p>
+
+<pre>
+Begin parsing &#39;position&#39;, setting currentNode = root:
+    <font color="red">1</font> - set currentNode = <font color="red">left</font> child of currentNode.
+    <font color="blue">2</font> - set currentNode = <font color="blue">middle</font> child of currentNode.
+    <font color="red">1</font> - set currentNode = <font color="red">left</font> child of currentNode.
+    <font color="green">3</font> - insert newNode as <font color="green">right</font> child of currentNode.
+</pre>
+
+<hr size="2" width="100%" align="center"/>
+
+<h2>Reading From / Writing To Files</h2>
+
+<p>There are many ways you can open files for reading/writing in Java. The most convenient way to read from files is to use the <a rel="noopener" href="https://docs.oracle.com/javase/7/docs/api/java/util/Scanner.html"><code>Scanner</code></a> class with which you are probably already very familiar. The <code>Scanner</code> class provides a constructor to produce an input stream given a filename, which can be used like so:</p>
+<pre>
+    try {
+    
+        Scanner fileIn = new Scanner(&quot;myfile.txt&quot;);
+        
+        while(fileIn.hasNextLine()) {
+            System.out.println(fileIn.nextLine());
+        }
+        
+        fileIn.close();
+        
+    } catch (FileNotFoundException fnfe) {
+    
+        System.out.println(&quot;An error occured.&quot;);
+        
+    }
+</pre>
+
+<p>The sample code above will open up a text file called <code>myfile.txt</code> and print it&#39;s entire contents to the terminal. Note that if the indicated file does not exist on disk, the <code>Scanner</code> class will throw a <code>FileNotFoundException</code>.</p>
+
+<p>Writing to a file is not much different, except you must use a class called <a rel="noopener" href="https://docs.oracle.com/javase/7/docs/api/java/io/PrintWriter.html"><code>PrintWriter</code></a>. The <code>PrintWriter</code> class provides a constructor to produce an output stream given a filename, which can be used like so:</p>
+<pre>
+    try {
+    
+        PrintWriter fileOut = new PrintWriter(&quot;myfile.txt&quot;);
+        
+        fileOut.writeLine(&quot;This is one line.&quot;);
+        fileOut.writeLine(&quot;This is written to another line.&quot;);
+        ...
+        fileOut.close();
+    
+    } catch (FileNotFoundException fnfe) {
+    
+        System.out.println(&quot;An error occured.&quot;);
+    
+    }
+</pre>
+
+<p>The sample code above writes a few lines to a file called <code>myfile.txt</code>. Note that if the indicated file does not exist on disk, the <code>PrintWriter</code> class will create it automatically (<i>a <code>FileNotFoundException</code> will only be generated if the file could not be created on disk for some reason</i>).</p>
+
+<p><span class="warning">CAUTION:</span> These two methods only work for <b>text</b> data which is encoded in a specific format. For the purposes of this assignment, these to classes will provide the functionality you need; however, reading and writing <b>binary</b> data required a bit more overhead. Be sure to close both streams once you have finished reading/writing.</p>
+
+<hr size="2" width="100%" align="center"/>
+
+<h2><font color="red">EXTRA CREDIT - OPTIONAL</font></h2>
+
+Each of the following options may be implemented for extra credit for this assignment.
+
+<h4>1. Return to Parent:</h4>
+<p>Provide functionality to allow the cursor to go <i>up</i> the tree and return to it&#39;s direct parent.</p>
+
+<h4>2. Win Probability:</h4>
+<p>Display the <b>probability of winning</b> when a node in the tree is selected (<i>this should occur while playing the game, not editing the game</i>). The probability of winning is defined as follows:</p>
+
+<pre>
+    P(win) = # winning leaves / # total leaves
+</pre>
+
+
+<p><span class="green">Note:</span> the &#39;number of leaves&#39; in this sense is concerned only with the current <b>sub-tree rooted at the cursor</b>. For example, the probability of winning at the beginning of the game (<i>first node is selected</i>) is equal to the <b>total</b> number of winning leaves divided by the <b>total</b> number of leaves in the tree. Conversely, the probability of winning when selecting a node with two children, both leaves, is 50% if only <b>one</b> of the two nodes result in a winning state. (<i>1.0 / 2.0 = 0.5</i>)</p>
+
+<h4>3. Arbitrary Story Tree:</h4>
+<p>Extend the functionality of the <code>StoryTree</code> class for extra credit. Instead of using a ternary (3-child) tree structure, implement <code>StoryTree</code> so that any node may contain up to 10 child references. If you attempt this, try to avoid having 10	member variables for each <code>StoryTreeNode</code> (i.e. <code>child1, child2, child3</code> etc.). What would be a better way to handle an arbitrary number of child 
+		references?</p>
+
+<hr size="2" width="100%" align="center"/>
+
+<h2>Sample Input/Output:</h2>
+
+<p><span class="comment">// Comment in green, </span><span class="input">input in red, 
+</span>output in black</p>
+
+<div style="font-size:16;" class="code"><strong>
+
+<pre>
+<span class="comment">// General use.</span>
+Hello and Welcome to Zork!
+
+Please enter the file name: <span class="input">SampleStory.txt</span>
+
+Loading game from file...
+
+File loaded!
+
+Would you like to edit (E), play (P) or quit (Q)?  <span class="input">P</span>
+
+Let&#39;s Play! <span class="comment">// Display &quot;option&quot; of root node.</span>
+
+It is Monday morning and your alarm goes off. What do you do?
+1) Wake up.
+2) Hit snooze. 
+3) Turn off the alarm. 
+Please make a choice. <span class="input">2</span>
+
+The alarm goes off again, what do you do?
+1) Snooze again.
+2) Get up.
+Please make a choice. <span class="input">2</span>
+
+You&#39;re running a little late for class, what do you do?
+1) Run to class.
+2) Walk to class.
+
+Please make a choice. <span class="input">C</span> <span class="comment">// Extra credit (<i>cheat code</i>)</span>
+Probability of a win at this point: 75.0% 
+
+Please make a choice. <span class="input">1</span>
+
+You make it to class on time, and pass the quiz. YOU WIN.
+
+Thanks for playing.
+
+Would you like to edit (E), play (P) or quit (Q)?  <span class="input">E</span>
+
+Zork Editor:
+    V: View the cursor&#39;s position, option and message.
+    S: Select a child of this cursor (options are 1, 2, and 3).
+    O: Set the option of the cursor.
+    M: Set the message of the cursor.
+    A: Add a child StoryNode to the cursor.
+    D: Delete one of the cursor&#39;s children and all its descendants.
+    R: Move the cursor to the root of the tree.
+    Q: Quit editing and return to main menu.
+
+Please select an option: <span class="input">R</span>
+Cursor moved to root.
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">V</span>
+
+Position: 1
+Option: Let&#39;s play!
+Message: It is Monday morning and your alarm goes off. What do you do?
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">S</span>
+
+Please select a child: [1,2,3] <span class="input">4</span>
+
+Error. No child 4 for the current node.
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">S</span>
+
+Please select a child: [1,2,3] <span class="input">2</span>
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">V</span>
+
+Position: 1-2
+Option: Hit snooze.
+Message: The alarm goes off again, what do you do?
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">D</span>
+
+Please select a child: [1,2] <span class="input">1</span>
+
+Subtree deleted.
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">O</span>
+Please enter a new option: <span class="input">Take the clock and throw it at the wall.</span>
+
+Option set.
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">M</span>
+Please enter a new Message: <span class="input">You&#39;ve successfully woken up, but you lost  your clock. YOU WIN.</span>
+
+Message set.
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">R</span>
+Cursor moved to root.
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">S</span>
+
+Please select a child: [1,2,3].<span class="input">2</span>
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">M</span>
+
+Please enter a new Message: <span class="input">You&#39;ve successfully woken up, but you lost  your clock.</span>
+
+Message set.
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">A</span>
+Enter an option: <span class="input"> Panic because you lost your clock.</span>
+Enter a message: <span class="input">It&#39;s ok, the clock fairy has arrived to save you. YOU WIN.</span>
+
+Child added.
+
+<span class="comment">// Menu not showed in sample I/O.</span>
+Please select an option: <span class="input">Q</span>
+
+Would you like to edit (E), play (P) or quit (Q)? <span class="input">Q</span>
+
+Game being saved to SampleStory.txt...
+
+Save successful!
+
+Program terminating normally.
+
+</pre>
+
+</strong>
+</div>
+
+<strong></strong></div><strong>
+
+<hr size="2" width="100%" align="center"/>
+
+<p align="center" style="text-align:center;"><strong><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:maroon;"><a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">Course Info</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/schedule.htm" target="_blank">Schedule</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/sections.htm" target="_blank">Sections</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">Announcements</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/homework.htm" target="_blank">Homework</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/exams.htm" target="_blank">Exams</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/help.htm" target="_blank">Help/FAQ</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/grades.htm" target="_blank">Grades</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">HOME</a></span></strong><b> </b></p>
+
+</strong></div>
+<script type="module" src="https://s.brightspace.com/lib/bsi/20.23.3-209/unbundled/mathjax.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					if (document.querySelector('math') || /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(document.body.innerHTML)) {
+						document.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+							elm.setAttribute('style', 'display: block; height: 0.5rem;');
+						});
+
+						window.D2L.MathJax.loadMathJax({
+							'outputScale': 1.3,
+							'renderLatex': true
+						});
+					}
+				});</script><script type="module" src="https://s.brightspace.com/lib/bsi/20.23.3-209/unbundled/prism.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					document.querySelectorAll('.d2l-code').forEach(code => {
+						window.D2L.Prism.formatCodeElement(code);
+					});
+				});</script></body></html>

@@ -1,0 +1,7 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "/Users/GraceWang/Desktop/CSE214/homeworks/hw7/bigdata.jar",
+        "bigdata.jar"
+    ]
+}

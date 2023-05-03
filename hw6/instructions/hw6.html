@@ -1,0 +1,441 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head></head><body>
+
+
+
+
+
+
+
+
+
+<div lang="EN-US">
+<div>
+
+<h2 align="center" style="text-align:center;">
+    <span>
+        <img src="http://www.cs.stonybrook.edu/~cse214/images/logo.gif"/>
+    </span>
+    <span>
+        <span style="color:purple;"><br/>
+        </span>
+    </span>
+    <span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:maroon;">
+        HOMEWORK 6- Spring 2023
+    </span>
+</h2>
+
+<div align="center" style="text-align:center;"><span>
+
+<hr size="2" width="100%" align="center"/>
+
+</span></div>
+
+<h3>
+    <strong><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+        HOMEWORK 6 - due <span style="color:red;">Thursday, April 18th</span> no later than 7:00PM
+    </span></strong>
+</h3>
+
+<p><strong><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+    REMINDERS:
+</span></strong></p>
+
+<ul type="disc">
+   <li><b><span style="color:red;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+   Submit your files only via CodeGrade in the <a rel="noopener" href="https://mycourses.stonybrook.edu/d2l/le/content/358338/Home">Content page on Brightspace</a>. Access CodeGrade by clicking &quot;HW6 - CODEGRADE SUBMISSION LINK&quot; for your submission.</span></b><span></span></li>
+
+				<li><b><span style="color:red;font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">
+   Use of a package is optional. If you wish to use it, make sure to name it &quot;hw6&quot; (all in lower case). Otherwise, you will lose points.</span></b><span></span></li>
+
+ <li><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">Be sure your
+     code follows the <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/codingstyle.htm" target="_blank">coding
+     style</a> for CSE214. </span></b><span></span></li>
+ <li><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">Make sure
+     you read the warnings about <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">academic dishonesty</a>.
+     <i>Remember, all work you submit for homework or exams MUST be your own
+     work.</i> </span></b></li>
+ <li><b><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;">Login to
+     your <a rel="noopener" href="http://facdev04.cs.stonybrook.edu:8080/grade.Login" target="_blank">grading
+     account</a> and click &quot;Submit Assignment&quot; to upload and submit
+     your assignment. </span></b></li>
+
+<li><b><span style="font-family:Arial;color:green;">You may use (and are encouraged to use) any Java
+	API Data Structures you like to implement this assignment. </span></b><b><span style="font-family:Arial,sans-serif;"></span></b></li>
+<li><b><span style="font-family:Arial,sans-serif;">You may
+     use Scanner, InputStreamReader, or any other class that you wish for
+     keyboard input.</span></b></li>
+</ul>
+
+<hr size="2" width="100%" align="center"/>
+<p>When working with data, we must choose the best data structure to manipulate the data set in order to achieve efficient results. A very basic array can store information without a problem, but is inefficient when we are constantly storing and searching for data. The idea of a table is created to increase the efficiency and avoid such problems. Tables store data using a tuple &amp;ltKey, Value&amp;gt. We choose a special field of an object, and use it to uniquely identify the entire object. Therefore, when we store and search for an object, we will use the key to save or search for the object. Ideally, this will reduce the algorithm to O(1). For this assignment, you are allowed to use a HashTable, or a HashMap.</p>
+
+<p>For this assignment, we will be modeling self storage boxes! In the Rocky Stream self storage, there are a lot of boxes, many of which aren&#39;t always full (<i>this isn&#39;t a very successful business</i>). Therefore, it is more efficient to store information only about the occupied boxes. Each box has an ID, and there may be an owner and a description of the contents.</p>
+
+<h2 style="text-align:center;">Approximate UML Diagram </h2><br/>
+<p style="text-align:center;">
+	<img width="800px" src="http://www.cs.stonybrook.edu/~cse214/hw/hw6-images/hw6Uml-sp21.jpg"/>
+</p>
+
+<h2>Required Classes</h2>
+<p>The following sections describe classes which are required for this assignment. Each section provides a description and the specifications necessary to complete each class. If you feel that additional methods would be useful, feel free to add them during your implementation as you see fit. However, all the variables and methods in the following specifications must be included in your project.</p>
+
+<p><font color="red">NOTE:</font> All classes listed should implement the <span class="code">
+Serializable</span> interface, except for StorageManager.</p>
+
+<h3>1. Storage</h3>
+<p>Write a fully documented class named Storage that contains three private data fields: <code><b>int id</b></code>, <code><b>String client</b></code>, <code><b>String contents</b></code>, along with public getter and setter methods for each of these fields. This class will be used to represent a storage box registered with the company.</p>
+
+<p> As mentioned above, this class should implement the <code>Serializable</code> interface.</p>
+<p>
+<ul>
+    <li><b><code>private int id</code></b>
+        <ul>
+            <li>The unique ID of the storage box.</li>
+        </ul>
+    </li>
+    <li><b><code>private String client</code></b>
+        <ul>
+            <li>The name of the client storing the box with the company.</li>
+        </ul>
+    </li>
+    <li><b><code>private String contents</code></b>
+        <ul>
+            <li>A brief description of the contents of the box.</li>
+        </ul>
+    </li>
+    <li>Getter and Setter methods for the above three member variables.</li>
+</ul>
+</p>
+
+<h3>2. StorageTable</h3>
+
+<p>The database of <code>Storages</code> will be stored in a hash table to provide constant time insertion and deletion. Use the <code>id</code> of <code>Storage</code> objects as the key for hashing. In this assignment, you may provide your own implementation for the <span class="code">StorageTable</span> class, or you may use the <code>HashTable</code> (or <code>HashMap</code>) implementation provided by the Java API.</p>
+
+<p><span class="warning">Note:</span> If you utilize the Java API classes, <b>you <span class="warning">must</span> use inheritance</b>. If you would like to know more about the Java API implementations, you should read the Oracle documentation for <span class="code"><a rel="noopener" href="http://docs.oracle.com/javase/8/docs/api/java/util/Hashtable.html"> java.util.Hashtable</a></span> and <span class="code"><a rel="noopener" href="http://docs.oracle.com/javase/8/docs/api/java/util/HashMap.html">java.util.HashMap</a></span>. <i>Hint: a class can extend one class and implement another interface.</i></p>
+
+<p>Just as the above classes, this class should implement the <code>Serializable</code> interface.</p>
+
+<p>
+<ul>
+    <li><b><code>public void putStorage(int storageId, Storage storage) throws IllegalArgumentException</code></b>
+        <ul>
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Manually inserts a <code>Storage</code> object into the table using the specified key.</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Parameters:</i>
+                <ul>
+                    <li><span class="code">storageId</span>
+                        <ul>
+                            <li>The unique key for the <code>Storage</code> object.</li>
+                        </ul>
+                    </li>
+                    <li><span class="code">Storage</span>
+                        <ul>
+                            <li>The <code>Storage</code> object to insert into the table.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li><br/>
+
+            <li><i>Preconditions:</i>
+                <ul>
+                    <li><code>storageId ≥ 0</code> and does not already exist in the table.</li>
+                    <li><code>Storage ≠ null</code></li>
+                </ul>
+            </li><br/>
+
+            <li><i>Postconditions:</i>
+                <ul>
+                    <li>The <code>Storage</code> has been inserted into the table with the indicated <code>key</code>.</li>
+                </ul>
+            </li><br/>
+
+            <li><i>Throws:</i>
+                <ul>
+                    
+                    <li><span class="code">IllegalArgumentException</span>: If any of the preconditions is not met.</li>
+                </ul>
+            </li><br/>
+
+        </ul>
+    </li>
+    <li><b><code>public Storage getStorage(int storageID)</code></b>
+		<ul>
+	        <li><i>Brief:</i>
+	            <ul>
+	                <li>Retrieve the <code>Storage</code> from the table having the indicated <code>storageID</code>. If the requested storageID does not exist in the StorageTable, return null.</li>
+	            </ul>
+	        </li><br/>
+
+	        <li><i>Parameters:</i>
+	            <ul>
+	                <li><span class="code">storageID</span>
+	                    <ul>
+	                        <li>Key of the <code>Storage</code> to retrieve from the table.</li>
+	                    </ul>
+	                </li>
+	            </ul>
+	        </li><br/>
+
+	        <li><i>Returns:</i>
+	            <ul>
+	                <li>A <code>Storage</code> object with the given key, <strong>null otherwise.</strong></li>
+	            </ul>
+	        </li><br/>
+	    </ul>
+	</li>
+ 
+</ul>
+</p>
+
+
+<h3>3. StorageManager</h3>
+<p>Write a fully-documented class named <span class="code">StorageManager</span>. This class will allow the user to interact with the storage database by listing the storage boxes occupied, allowing the user to add or remove storage boxes, searching for a box by id, and listing all the boxes for a user. In addition, the class should provide the functionality to load a saved (serialized) <span class="code">StorageTable</span> or create a new one if a saved table does not exist.</p>
+
+<p>On startup, the <span class="code">StorageManager</span> should check to see if the file <font color="green"><span class="code">storage.obj</span></font> exists in the current directory. If it does, then the file should be loaded and deserialized into a <span class="code">StorageTable</span>. If the file does not exist, an empty <span class="code">StorageTable</span> object should be created and used instead. In either case, the user should be allowed to fully interact with the storage table, inserting, removing, selecting, and reading entries.</p>
+
+<p>When the user enters &#39;Q&#39; to quit the program, the storage table should be serialized to the file <font color="green"><span class="code">storage.obj</span></font>. That way, the next time the program is run, the storages will remain in the database and allow different users to manipulate the storage records. If you would like to &#39;reset&#39; the storage table, use the &quot;X&quot; command to delete the file, if it exists, when the program quits (you must first check if the file exists, delete it if it does; and do not serialize the current <code>StorageTable</code> upon exit).</p>
+
+<p>
+    This class contains:
+</p>
+<ul>
+	<li><strong><span class="code">private static StorageTable</span></strong>:
+        <ul>This is the hash table of for storing the storage objects.
+        </ul></li>
+    
+    <li><strong><span class="code">public static void main(String[] args)</span></strong>
+        <ul>
+
+            <li><i>Brief:</i>
+                <ul>
+                    <li>Implement the following menu options:</li>
+                    <ul><strong><span class="code">
+                        </span></strong><li><strong>P - Print all storage boxes</strong></li><strong>
+                        </strong><li><strong>A - Insert into storage box</strong></li><strong>
+                        </strong><li><strong>R - Remove contents from a storage box</strong></li><strong>
+                        </strong><li><strong>C - Select all boxes owned by a particular client</strong></li><strong>
+                        </strong><li><strong>F - Find a box by ID and display its owner and contents</strong></li><strong>
+                        </strong><li><strong>Q - Quit and save workspace</strong></li><strong>
+                        </strong><li><strong>X - Quit and delete workspace</strong></li><strong>
+                        </strong></ul>
+                </ul>
+            </li><br/>
+
+        </ul>
+    </li>
+</ul>
+
+<hr size="2" width="100%" align="center"/>
+
+<h2>Serializable Interface</h2>
+
+<p>You will also work with the idea of persistence. This means that our program should save all data from session to session. When we terminate a program, normally the data will be lost. We will preserve this data by using <span class="code">Serializable</span> Java API and binary object files. All your classes should simply implement the java.io.Serializartion interface.<p>
+
+<p><i>Example:</i> Your <span style="font-family:Courier New;">StorageTable</span> class contains information for all <code>Storage</code> objects saved in the electronic database. You would want to preserve this data, so you can load this data the next time you run your program. You would do the following:
+<ol>
+    <li>Modify the <code>StorageTable</code> so that it implements the <code>Serializable</code> interface. Also, the <code>Storage</code> class should also make this implementation. No other changes are necessary.<br/>
+    <pre>public class StorageTable implements Serializable
+{
+    <span class="comment">// Member methods as is</span>
+}
+    </pre></li>
+    
+    <li>In your application that contains the <code>StorageTabe</code>, you can include code that will save that class&#39;s data into a file so it can be read in again later. To do this, you need to create an <code>ObjectOutputStream</code> to send the data to, and then use the <span class="code">writeObject</span> method to send the hash to the stream, which is stored in the specified file.<br/>
+     <pre>StorageTable storage = new StorageTable(<span class="comment">/*Constructor Parameters*/</span>);
+
+<span class="comment">// missing code here adds Storage objects to the table.</span>
+     
+FileOutputStream file = new FileOutputStream(&quot;storage.obj&quot;);
+ObjectOutputStream outStream = new ObjectOutputStream(file);
+<span class="comment">// the following line will save the object in the file</span>
+outStream.writeObject(storage);
+outStream.close();
+     </pre>
+     </li>
+ <li>When the same application (or another application) runs again, you can initialize the member using the serialized data saved from step 2 so you don&#39;t have to recreate the object from scratch. To do this, you need to create an <code>ObjectInputStream</code> to read the data from, and then use the <code>readObject</code> method to read the hash from the stream.
+     <br/>
+     <pre>FileInputStream file = new FileInputStream(&quot;storage.obj&quot;);
+ObjectInputStream inStream = new ObjectInputStream(file);
+StorageTable storage;
+
+storage = <span class="warning">(StorageTable)</span> inStream.readObject();
+<span class="warning">inStream.close()</span>;
+<span class="comment">// missing code here can use StorageTable constructed previously</span>
+    </pre>
+ </li>
+
+</ol>
+</p>
+
+<hr size="2" width="100%" align="center"/>
+
+<h2>Sample Input/Output:</h2><pre>
+Hello, and welcome to Rocky Stream Storage Manager
+
+P - Print all storage boxes
+A - Insert into storage box
+R - Remove contents from a storage box
+C - Select all boxes owned by a particular client
+F - Find a box by ID and display its owner and contents
+Q - Quit and save workspace
+X - Quit and delete workspace
+
+Please select an option: A 
+Please enter id: 1
+Please enter client: SBU CS Department
+Please Enter Contents: 2006 Dell Workstations
+
+Storage 1 set!
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: A 
+Please enter id: <span class="input">4</span>
+Please enter client: 214 TAs
+Please Enter Contents: Unreturned Exams
+
+Storage <span class="input">4</span> set!
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: A 
+Please enter id: <span class="input">12</span>
+Please enter client: 214 TAs
+Please Enter Contents: Spare Null Pointer Exceptions
+
+Storage <span class="input">12</span> set!
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: A 
+Please enter id: 11
+Please enter client: SBU CS Department
+Please Enter Contents: Dashed Hopes and Dreams
+
+Storage 11 set!
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: P
+
+Box#          Contents                       Owner
+----------------------------------------------------------------
+1            2006 Dell Workstations          SBU CS Department
+4            Unreturned Exams                214 TAs
+11           Dashed Hopes and Dreams         SBU CS Department
+12           Spare Null Pointer Exceptions   214 TAs
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: C 
+Please enter the name of the client: SBU CS Department
+
+Box#          Contents                       Owner
+----------------------------------------------------------------
+1            2006 Dell Workstations          SBU CS Department
+11           Dashed Hopes and Dreams         SBU CS Department
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: F 
+Please enter ID: 12
+Box 12
+Contents: Spare Null Pointer Exceptions
+Owner: 214 TAs
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: R
+Please enter ID: 4
+Box 4 is now removed.
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: P
+
+Box#          Contents                       Owner
+----------------------------------------------------------------
+1            2006 Dell Workstations          SBU CS Department
+11           Dashed Hopes and Dreams         SBU CS Department
+12           Spare Null Pointer Exceptions   214 TAs
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: Q
+Storage Manager is quitting, current storage is saved for next session.
+
+<span class="comment">//The Grading TA Restarts the program, rubbing his/her eyes and wondering how soon he/she can get to sleep </span>
+
+Hello, and welcome to Rocky Stream Storage Manager
+
+P - Print all storage boxes
+A - Insert into storage box
+R - Remove contents from a storage box
+C - Select all boxes owned by a particular client
+F - Find a box by ID and display its owner and contents
+Q - Quit and save workspace
+X - Quit and delete workspace
+
+
+
+Please select an option: P
+
+Box#          Contents                       Owner
+----------------------------------------------------------------
+1            2006 Dell Workstations          SBU CS Department
+11           Dashed Hopes and Dreams         SBU CS Department
+12           Spare Null Pointer Exceptions   214 TAs
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: A 
+Please enter id: 7
+Please enter client: Shady Guy in South P
+Please Enter Contents: Lots of Hash (tables)
+
+Storage 7 set!
+
+<span class="comment">//Options not shown in Sample IO </span>
+Please select an option: P
+
+Box#          Contents                       Owner
+----------------------------------------------------------------
+1            2006 Dell Workstations          SBU CS Department
+7            Lots of Hash (tables)           Shady Guy in South P
+11           Dashed Hopes and Dreams         SBU CS Department
+12           Spare Null Pointer Exceptions   214 TAs
+
+Please select an option: X
+Storage Manager is quitting, all data is being erased. <span class="comment">//#kbai</span>
+</pre>
+
+<p><span class="comment">// Comment in green, </span><span class="input">input in red,
+</span>output in black</p>
+
+<div style="font-size:16;" class="code"><strong>
+
+<pre>
+
+
+</pre>
+
+</strong>
+</div>
+
+<strong></strong></p></p></div>
+
+<hr size="2" width="100%" align="center"/>
+
+<p align="center" style="text-align:center;"><strong><span style="font-family:&quot;Arial&quot;,&quot;sans-serif&quot;;color:maroon;"><a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/courseinfo.htm" target="_blank">Course Info</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/schedule.htm" target="_blank">Schedule</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/sections.htm" target="_blank">Sections</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">Announcements</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/homework.htm" target="_blank">Homework</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/exams.htm" target="_blank">Exams</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/help.htm" target="_blank">Help/FAQ</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/grades.htm" target="_blank">Grades</a> | <a rel="noopener" href="http://www.cs.sunysb.edu/~cse214/index.html" target="_blank">HOME</a></span></strong><b> </b></p>
+
+</div>
+<script type="module" src="https://s.brightspace.com/lib/bsi/20.23.3-209/unbundled/mathjax.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					if (document.querySelector('math') || /\$\$|\\\(|\\\[|\\begin{|\\ref{|\\eqref{/.test(document.body.innerHTML)) {
+						document.querySelectorAll('mspace[linebreak="newline"]').forEach(elm => {
+							elm.setAttribute('style', 'display: block; height: 0.5rem;');
+						});
+
+						window.D2L.MathJax.loadMathJax({
+							'outputScale': 1.3,
+							'renderLatex': true
+						});
+					}
+				});</script><script type="module" src="https://s.brightspace.com/lib/bsi/20.23.3-209/unbundled/prism.js"></script><script type="text/javascript">document.addEventListener('DOMContentLoaded', function() {
+					document.querySelectorAll('.d2l-code').forEach(code => {
+						window.D2L.Prism.formatCodeElement(code);
+					});
+				});</script></body></html>
